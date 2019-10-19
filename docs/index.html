@@ -69,7 +69,7 @@
 				</a>
 				<p>Tiny validation library, so wegood with data.</p>
 				<blockquote>
-					<p>Revision: October 18, 2019.</p>
+					<p>Revision: October 19, 2019.</p>
 				</blockquote>
 				<a href="#about" id="about" style="color: inherit; text-decoration: none;">
 					<h2>About</h2>
@@ -96,17 +96,23 @@
 				<p><strong>Table of Content</strong></p>
 				<hr>
 				<ul>
-					<li><a href="#wegood">wegood</a><ul>
-							<li><a href="#about">About</a></li>
-							<li><a href="#installation-via-npm-or-yarn">Installation via NPM or Yarn</a></li>
-							<li><a href="#basic-usage">Basic Usage</a></li>
-							<li><a href="#contributing">Contributing</a><ul>
-									<li><a href="#pull-request-process">Pull Request Process</a></li>
-								</ul>
-							</li>
-							<li><a href="#license">License</a></li>
+					<li><a href="#basic-usage">Basic Usage</a></li>
+					<li><a href="#builtin-validation-rules">Builtin Validation Rules</a><ul>
+							<li><a href="#present">Present</a></li>
+							<li><a href="#equal">Equal</a></li>
+							<li><a href="#pattern">Pattern</a></li>
+							<li><a href="#range">Range</a></li>
+							<li><a href="#length">Length</a></li>
+							<li><a href="#exclude">Exclude</a></li>
+							<li><a href="#include">Include</a></li>
+							<li><a href="#date">Date</a></li>
 						</ul>
 					</li>
+					<li><a href="#contributing">Contributing</a><ul>
+							<li><a href="#pull-request-process">Pull Request Process</a></li>
+						</ul>
+					</li>
+					<li><a href="#license">License</a></li>
 				</ul>
 				<hr>
 				<a href="#basic-usage" id="basic-usage" style="color: inherit; text-decoration: none;">
@@ -126,13 +132,15 @@
  * Create a new instances of the validator with given rules.
  */</span>
 
-<span class="hljs-keyword">const</span> equalValidator = <span class="hljs-keyword">new</span> Validator([
+<span class="hljs-keyword">const</span> ratingValidator = <span class="hljs-keyword">new</span> Validator([
+  present(<span class="hljs-string">'The rating is required.'</span>),
   equal(<span class="hljs-string">'The value must be 5.'</span>, <span class="hljs-number">5</span>)
 ]);
 
 <span class="hljs-keyword">const</span> idValidator = <span class="hljs-keyword">new</span> Validator([
+  present(<span class="hljs-string">'The ID is required.'</span>),
   length(<span class="hljs-string">'The value must 9 characters long.'</span>, <span class="hljs-number">9</span>, <span class="hljs-number">9</span>),
-  pattern(<span class="hljs-string">'The value must be in A000-0000 format, where 0 could be any number'</span>, /^A\d{<span class="hljs-number">3</span>}-\d{<span class="hljs-number">4</span>}$/)
+  pattern(<span class="hljs-string">'The value must be in A000-0000 format, where 0 could be any number.'</span>, /^A\d{<span class="hljs-number">3</span>}-\d{<span class="hljs-number">4</span>}$/)
 ]);
 
 <span class="hljs-comment">/**
@@ -141,22 +149,451 @@
 
 <span class="hljs-comment">// Return true if valid,</span>
 <span class="hljs-comment">// error message of the first not-satisfied rule otherwise.</span>
-equalValidator.validate(<span class="hljs-number">1</span>);
+ratingValidator.validate(<span class="hljs-number">1</span>);
 
 <span class="hljs-comment">// Return true if valid,</span>
 <span class="hljs-comment">// array of error messages of all not-satisfied rules otherwise.</span>
 idValidator.validate(<span class="hljs-string">'a1234-4'</span>, <span class="hljs-literal">false</span> <span class="hljs-comment">/* firstErrorOnly */</span>);
 
 <span class="hljs-comment">// Return true if valid, false otherwise.</span>
-equalValidator.valid(<span class="hljs-number">1</span>);
+ratingValidator.valid(<span class="hljs-number">1</span>);
 
 <span class="hljs-comment">// Return null if there is no error,</span>
 <span class="hljs-comment">// error message of the first not-satisfied rule otherwise.</span>
-equalValidator.error(<span class="hljs-number">1</span>);
+ratingValidator.error(<span class="hljs-number">1</span>);
 
 <span class="hljs-comment">// Return null if there is no error,</span>
 <span class="hljs-comment">// array of error messages of all not-satisfied rules otherwise.</span>
 idValidator.errors(<span class="hljs-string">'a1234-4'</span>);</code></pre>
+				<a href="#builtin-validation-rules" id="builtin-validation-rules" style="color: inherit; text-decoration: none;">
+					<h2>Builtin Validation Rules</h2>
+				</a>
+				<p>All builtin validation rules have this construct:</p>
+				<pre><code class="language-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">rule</span>(<span class="hljs-params">errorMessage: <span class="hljs-built_in">string</span>, agr1: <span class="hljs-built_in">any</span>, ... argN: <span class="hljs-built_in">any</span></span>): (<span class="hljs-params">value: <span class="hljs-built_in">any</span></span>) =&gt; <span class="hljs-title">true</span>|<span class="hljs-title">false</span></span></code></pre>
+				<ul>
+					<li>A function which returns the validation rule function with set error message, plug-able into the Validator, or it could be used individually, e.g. <code>rule(&#39;error message&#39;)(testValue)</code>.</li>
+					<li>The args differs form rule to rule.</li>
+				</ul>
+				<a href="#present" id="present" style="color: inherit; text-decoration: none;">
+					<h3>Present</h3>
+				</a>
+				<p>Verify that the tested value is present, i.e. not empty.</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { present } <span class="hljs-keyword">from</span> <span class="hljs-string">'@briza/wegood'</span>;</code></pre>
+				<p><strong>Function Arguments</strong></p>
+				<pre><code class="language-typescript">present(errorMessage)</code></pre>
+				<table>
+					<thead>
+						<tr>
+							<th>Argument</th>
+							<th>Notes</th>
+							<th>Example</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>errorMessage</td>
+							<td>Error message.</td>
+							<td>&#39;the value must be 5&#39;</td>
+						</tr>
+				</tbody></table>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/modules/_rule_present_.html">Code documentation</a>.</p>
+				</blockquote>
+				<ul>
+					<li>Non-empty array is evaluated as valid.</li>
+					<li>Empty string is evaluated as invalid.</li>
+					<li>Object, Function is evaluated as invalid.</li>
+				</ul>
+				<p><strong>Example</strong></p>
+				<pre><code class="language-typescript"><span class="hljs-comment">// The value must have some value.</span>
+present(<span class="hljs-string">'error message'</span>);</code></pre>
+				<a href="#equal" id="equal" style="color: inherit; text-decoration: none;">
+					<h3>Equal</h3>
+				</a>
+				<p>Verify that the tested value is equal to another.</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { equal } <span class="hljs-keyword">from</span> <span class="hljs-string">'@briza/wegood'</span>;</code></pre>
+				<p><strong>Function Arguments</strong></p>
+				<pre><code class="language-typescript">equal(errorMessage, value|customMatcher)</code></pre>
+				<table>
+					<thead>
+						<tr>
+							<th>Argument</th>
+							<th>Notes</th>
+							<th>Example</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>errorMessage</td>
+							<td>Error message.</td>
+							<td>&#39;the value must be 5&#39;</td>
+						</tr>
+						<tr>
+							<td>value</td>
+							<td>The equal value.</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>customMatcher</td>
+							<td>Custom equality predicate function.</td>
+							<td><code>(value) =&gt; value === 5</code></td>
+						</tr>
+				</tbody></table>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/modules/_rule_equal_.html">Code documentation</a>.</p>
+				</blockquote>
+				<p><strong>Example</strong></p>
+				<pre><code class="language-typescript"><span class="hljs-comment">// The value must be equal to 5.</span>
+equal(<span class="hljs-string">'error message'</span>, <span class="hljs-number">5</span>);
+
+<span class="hljs-comment">// Custom matcher.</span>
+equal(<span class="hljs-string">'error message'</span>, <span class="hljs-function">(<span class="hljs-params">value</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> value === <span class="hljs-number">5</span>;
+});</code></pre>
+				<a href="#pattern" id="pattern" style="color: inherit; text-decoration: none;">
+					<h3>Pattern</h3>
+				</a>
+				<p>Verify that the tested value is matches the pattern.</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { pattern } <span class="hljs-keyword">from</span> <span class="hljs-string">'@briza/wegood'</span>;</code></pre>
+				<p><strong>Function Arguments</strong></p>
+				<pre><code class="language-typescript">pattern(errorMessage, rx)</code></pre>
+				<table>
+					<thead>
+						<tr>
+							<th>Argument</th>
+							<th>Notes</th>
+							<th>Example</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>errorMessage</td>
+							<td>Error message.</td>
+							<td>&#39;invalid email format&#39;</td>
+						</tr>
+						<tr>
+							<td>rx</td>
+							<td>Regular expression used to validate the value.</td>
+							<td><code>/^[^@]+@.*\.[a-z]{2, 5}$/</code></td>
+						</tr>
+				</tbody></table>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/modules/_rule_pattern_.html">Code documentation</a>.</p>
+				</blockquote>
+				<p><strong>Example</strong></p>
+				<pre><code class="language-typescript"><span class="hljs-comment">// The value must match the given pattern.</span>
+pattern(<span class="hljs-string">'error message'</span>, <span class="hljs-regexp">/^[^@]+@.*\.[a-z]{2, 5}$/</span>);</code></pre>
+				<a href="#range" id="range" style="color: inherit; text-decoration: none;">
+					<h3>Range</h3>
+				</a>
+				<p>Verify that the tested value is in the given range.</p>
+				<ul>
+					<li>Applicable only on the number values, although the rule auto-converts string into number if it is a valid number.</li>
+					<li>Could be also used as MAX and MIN.<pre><code class="language-js"><span class="hljs-keyword">import</span> { range } <span class="hljs-keyword">from</span> <span class="hljs-string">'@briza/wegood'</span>;</code></pre>
+					</li>
+				</ul>
+				<p><strong>Function Arguments</strong></p>
+				<pre><code class="language-typescript">range(errorMessage, min, max)</code></pre>
+				<table>
+					<thead>
+						<tr>
+							<th>Argument</th>
+							<th>Notes</th>
+							<th>Example</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>errorMessage</td>
+							<td>Error message.</td>
+							<td>&#39;the value must be in range 3-10&#39;</td>
+						</tr>
+						<tr>
+							<td>min</td>
+							<td>Minimal boundary. If set to <code>undefined</code> or <code>null</code>, it is being ignored.</td>
+							<td>3</td>
+						</tr>
+						<tr>
+							<td>max</td>
+							<td>Maximal boundary. If set to <code>undefined</code> or <code>null</code>, it is being ignored.</td>
+							<td>10</td>
+						</tr>
+				</tbody></table>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/modules/_rule_range_.html">Code documentation</a>.</p>
+				</blockquote>
+				<p><strong>Example</strong></p>
+				<pre><code class="language-typescript"><span class="hljs-comment">// The value must be between 3 and 10.</span>
+range(<span class="hljs-string">'error message'</span>, <span class="hljs-number">3</span>, <span class="hljs-number">10</span>);
+
+<span class="hljs-comment">// The value must be 3 and above, aka MIN.</span>
+range(<span class="hljs-string">'error message'</span>, <span class="hljs-number">3</span>);
+
+<span class="hljs-comment">// The value must be 10 and bellow, aka MAX.</span>
+range(<span class="hljs-string">'error message'</span>, <span class="hljs-literal">null</span>|<span class="hljs-literal">undefined</span>, <span class="hljs-number">10</span>);</code></pre>
+				<a href="#length" id="length" style="color: inherit; text-decoration: none;">
+					<h3>Length</h3>
+				</a>
+				<p>Verify that the tested value is in the given string length range.</p>
+				<ul>
+					<li>Applicable only on the string values, although the rule auto-converts numbers into strings.</li>
+					<li>Could be also used as MAX and MIN.</li>
+				</ul>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { length } <span class="hljs-keyword">from</span> <span class="hljs-string">'@briza/wegood'</span>;</code></pre>
+				<p><strong>Function Arguments</strong></p>
+				<pre><code class="language-typescript">length(errorMessage, min, max)</code></pre>
+				<table>
+					<thead>
+						<tr>
+							<th>Argument</th>
+							<th>Notes</th>
+							<th>Example</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>errorMessage</td>
+							<td>Error message.</td>
+							<td>&#39;the value must be 3-10 characters long&#39;</td>
+						</tr>
+						<tr>
+							<td>min</td>
+							<td>Minimal length. If set to <code>undefined</code> or <code>null</code>, it is being ignored.</td>
+							<td>3</td>
+						</tr>
+						<tr>
+							<td>max</td>
+							<td>Maximal length. If set to <code>undefined</code> or <code>null</code>, it is being ignored.</td>
+							<td>10</td>
+						</tr>
+				</tbody></table>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/modules/_rule_length_.html">Code documentation</a>.</p>
+				</blockquote>
+				<p><strong>Example</strong></p>
+				<pre><code class="language-typescript"><span class="hljs-comment">// The value must be 3 up to 10 characters long.</span>
+length(<span class="hljs-string">'error message'</span>, <span class="hljs-number">3</span>, <span class="hljs-number">10</span>);
+
+<span class="hljs-comment">// The value must be 3 and more characters long, aka MIN.</span>
+length(<span class="hljs-string">'error message'</span>, <span class="hljs-number">3</span>);
+
+<span class="hljs-comment">// The value must be 10 and less characters long, aka MAX.</span>
+length(<span class="hljs-string">'error message'</span>, <span class="hljs-literal">null</span>|<span class="hljs-literal">undefined</span>, <span class="hljs-number">10</span>);</code></pre>
+				<a href="#exclude" id="exclude" style="color: inherit; text-decoration: none;">
+					<h3>Exclude</h3>
+				</a>
+				<p>Verify that the tested value is not the exclusion list.</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { exclude } <span class="hljs-keyword">from</span> <span class="hljs-string">'@briza/wegood'</span>;</code></pre>
+				<p><strong>Function Arguments</strong></p>
+				<pre><code class="language-typescript">exclude(errorMessage, exclusions)</code></pre>
+				<table>
+					<thead>
+						<tr>
+							<th>Argument</th>
+							<th>Notes</th>
+							<th>Example</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>errorMessage</td>
+							<td>Error message.</td>
+							<td>&#39;invalid value&#39;</td>
+						</tr>
+						<tr>
+							<td>exclusions</td>
+							<td>Array of exclusions.</td>
+							<td><code>[1,2,3]</code></td>
+						</tr>
+				</tbody></table>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/modules/_rule_exclude_.html">Code documentation</a>.</p>
+				</blockquote>
+				<p><strong>Example</strong></p>
+				<pre><code class="language-typescript"><span class="hljs-comment">// The value must not be contained in the list.</span>
+exclude(<span class="hljs-string">'error message'</span>, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);
+
+<span class="hljs-comment">// The value must not be contained in the list.</span>
+exclude(<span class="hljs-string">'error message'</span>, [<span class="hljs-string">'circle'</span>, <span class="hljs-string">'square'</span>, <span class="hljs-string">'triable'</span>]);</code></pre>
+				<a href="#include" id="include" style="color: inherit; text-decoration: none;">
+					<h3>Include</h3>
+				</a>
+				<p>Verify that the tested value is not the exclusion list.</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { include } <span class="hljs-keyword">from</span> <span class="hljs-string">'@briza/wegood'</span>;</code></pre>
+				<p><strong>Function Arguments</strong></p>
+				<pre><code class="language-typescript">include(errorMessage, inclusions)</code></pre>
+				<table>
+					<thead>
+						<tr>
+							<th>Argument</th>
+							<th>Notes</th>
+							<th>Example</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>errorMessage</td>
+							<td>Error message.</td>
+							<td>&#39;invalid value&#39;</td>
+						</tr>
+						<tr>
+							<td>inclusions</td>
+							<td>Array of inclusions.</td>
+							<td><code>[1,2,3]</code></td>
+						</tr>
+				</tbody></table>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/modules/_rule_include_.html">Code documentation</a>.</p>
+				</blockquote>
+				<p><strong>Example</strong></p>
+				<pre><code class="language-typescript"><span class="hljs-comment">// The value must be contained in the list.</span>
+include(<span class="hljs-string">'error message'</span>, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);
+
+<span class="hljs-comment">// The value must be contained in the list.</span>
+include(<span class="hljs-string">'error message'</span>, [<span class="hljs-string">'circle'</span>, <span class="hljs-string">'square'</span>, <span class="hljs-string">'triable'</span>]);</code></pre>
+				<a href="#date" id="date" style="color: inherit; text-decoration: none;">
+					<h3>Date</h3>
+				</a>
+				<p>Verify that the tested value is the date range.</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { date } <span class="hljs-keyword">from</span> <span class="hljs-string">'@briza/wegood'</span>;</code></pre>
+				<p><strong>Function Arguments</strong></p>
+				<pre><code class="language-typescript">date(errorMessage, start, end, transform)</code></pre>
+				<table>
+					<thead>
+						<tr>
+							<th>Argument</th>
+							<th>Notes</th>
+							<th>Example</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>errorMessage</td>
+							<td>Error message.</td>
+							<td>&#39;the date in not in valid range.&#39;</td>
+						</tr>
+						<tr>
+							<td>start</td>
+							<td>Start date boundary - <code>ISO date string</code> (yyyy-mm-dd), <code>Date object</code>, or <a href="#relative-date-offset">Relative Date Offset</a>. If set to <code>undefined</code> or <code>null</code>, it is being ignored.</td>
+							<td>3</td>
+						</tr>
+						<tr>
+							<td>end</td>
+							<td>End date boundary - <code>ISO date string</code> (yyyy-mm-dd), <code>Date object</code>, or <a href="#relative-date-offset">Relative Date Offset</a>. If set to <code>undefined</code> or <code>null</code>, it is being ignored.</td>
+							<td>3</td>
+						</tr>
+						<tr>
+							<td>transform</td>
+							<td>Custom Date object transformer function. Optional.</td>
+							<td><code>(value) =&gt; new Date(value)</code></td>
+						</tr>
+				</tbody></table>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/modules/_rule_date_.html">Code documentation</a>.</p>
+				</blockquote>
+				<a href="#relative-date-offset" id="relative-date-offset" style="color: inherit; text-decoration: none;">
+					<h4>Relative Date Offset</h4>
+				</a>
+				<p>Instead of a concrete ISO date string or Date object below annotated shortcodes might be used to set the date boundary relative to TODAY date.</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Annotation</th>
+							<th>Meaning</th>
+							<th>Example</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>0</td>
+							<td>Today.</td>
+							<td>0</td>
+						</tr>
+						<tr>
+							<td>-1</td>
+							<td>In past.</td>
+							<td>-1</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>In future.</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>-Nd</td>
+							<td>N days in past, relative from today.</td>
+							<td>-10d</td>
+						</tr>
+						<tr>
+							<td>Nd</td>
+							<td>N days in past, relative from today.</td>
+							<td>10d</td>
+						</tr>
+						<tr>
+							<td>-Nw</td>
+							<td>N weeks in past, relative from today.</td>
+							<td>-2w</td>
+						</tr>
+						<tr>
+							<td>Nw</td>
+							<td>N weeks in past, relative from today.</td>
+							<td>2w</td>
+						</tr>
+						<tr>
+							<td>-Nm</td>
+							<td>N months in past, relative from today.</td>
+							<td>-6m</td>
+						</tr>
+						<tr>
+							<td>Nm</td>
+							<td>N months in past, relative from today.</td>
+							<td>6m</td>
+						</tr>
+						<tr>
+							<td>-Ny</td>
+							<td>N years in past, relative from today.</td>
+							<td>-2y</td>
+						</tr>
+						<tr>
+							<td>Ny</td>
+							<td>N years in past, relative from today.</td>
+							<td>2y</td>
+						</tr>
+				</tbody></table>
+				<p><strong>Example</strong></p>
+				<pre><code class="language-typescript"><span class="hljs-comment">/**
+ * The value (date) must between the given data range.
+ */</span>
+<span class="hljs-comment">// ISO strings</span>
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-string">'2000-12-30'</span>, <span class="hljs-string">'2020-06-29'</span>);
+<span class="hljs-comment">// Date objects</span>
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2000-12-30T00:00:00+0000'</span>), <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2020-06-29T00:00:00+0000'</span>));
+
+<span class="hljs-comment">/**
+ * The value (date) must after the date.
+ */</span>
+<span class="hljs-comment">// ISO string</span>
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-string">'2000-12-30'</span>);
+<span class="hljs-comment">// Date object</span>
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2000-12-30T00:00:00+0000'</span>))
+
+<span class="hljs-comment">/**
+ * The value (date) must before the date.
+ */</span>
+<span class="hljs-comment">// ISO string</span>
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-literal">undefined</span>|<span class="hljs-literal">null</span>, <span class="hljs-string">'2020-06-29'</span>);
+<span class="hljs-comment">// Date object</span>
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-literal">undefined</span>|<span class="hljs-literal">null</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2020-06-29T00:00:00+0000'</span>))
+
+<span class="hljs-comment">/**
+ * Relative offsets, relative to today.
+ */</span>
+
+<span class="hljs-comment">// Any date in past, until today.</span>
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>);
+
+<span class="hljs-comment">// Any date in future, starts from today.</span>
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+
+<span class="hljs-comment">// Any date between 2 years ago, up to 3 months from today.</span>
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-string">'-2y'</span>, <span class="hljs-string">'3m'</span>);
+
+<span class="hljs-comment">// Combined fixed date with relative date.</span>
+<span class="hljs-comment">// Any date from 2000-12-30 until today.</span>
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-string">'2000-12-30'</span>, <span class="hljs-number">0</span>);
+</code></pre>
+				<hr>
 				<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
 					<h2>Contributing</h2>
 				</a>
@@ -212,6 +649,9 @@ idValidator.errors(<span class="hljs-string">'a1234-4'</span>);</code></pre>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_rule_pattern_.html">"rule/pattern"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_rule_present_.html">"rule/present"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_rule_range_.html">"rule/range"</a>

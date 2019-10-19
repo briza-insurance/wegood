@@ -42,3 +42,12 @@ export function isFunction (value: any): boolean {
 export function isDate (value: any): boolean {
   return value instanceof Date
 }
+
+/**
+ * Is Object
+ * @param {mixed} value tested value
+ * @return {boolean} result of the test
+ */
+export function isObject (value: any): boolean {
+  return typeof value === 'object' && value.constructor === Object
+}

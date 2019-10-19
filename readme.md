@@ -1,7 +1,7 @@
 # wegood
 Tiny validation library, so wegood with data.
 
-> Revision: October 18, 2019.
+> Revision: October 19, 2019.
 
 ## About
 This project has been developed to provide a shared validation logic between front-end and back-end code, easily extend-able with custom rules.
@@ -30,6 +30,7 @@ yarn add @briza/wegood -D
 
 - [Basic Usage](#basic-usage)
 - [Builtin Validation Rules](#builtin-validation-rules)
+  - [Present](#present)
   - [Equal](#equal)
   - [Pattern](#pattern)
   - [Range](#range)
@@ -59,13 +60,15 @@ import {
  * Create a new instances of the validator with given rules.
  */
 
-const equalValidator = new Validator([
+const ratingValidator = new Validator([
+  present('The rating is required.'),
   equal('The value must be 5.', 5)
 ]);
 
 const idValidator = new Validator([
+  present('The ID is required.'),
   length('The value must 9 characters long.', 9, 9),
-  pattern('The value must be in A000-0000 format, where 0 could be any number', /^A\d{3}-\d{4}$/)
+  pattern('The value must be in A000-0000 format, where 0 could be any number.', /^A\d{3}-\d{4}$/)
 ]);
 
 /**
@@ -74,18 +77,18 @@ const idValidator = new Validator([
 
 // Return true if valid,
 // error message of the first not-satisfied rule otherwise.
-equalValidator.validate(1);
+ratingValidator.validate(1);
 
 // Return true if valid,
 // array of error messages of all not-satisfied rules otherwise.
 idValidator.validate('a1234-4', false /* firstErrorOnly */);
 
 // Return true if valid, false otherwise.
-equalValidator.valid(1);
+ratingValidator.valid(1);
 
 // Return null if there is no error,
 // error message of the first not-satisfied rule otherwise.
-equalValidator.error(1);
+ratingValidator.error(1);
 
 // Return null if there is no error,
 // array of error messages of all not-satisfied rules otherwise.
@@ -99,6 +102,33 @@ function rule(errorMessage: string, agr1: any, ... argN: any): (value: any) => t
 ```
 - A function which returns the validation rule function with set error message, plug-able into the Validator, or it could be used individually, e.g. ```rule('error message')(testValue)```.
 - The args differs form rule to rule.
+
+### Present
+Verify that the tested value is present, i.e. not empty.
+```js
+import { present } from '@briza/wegood';
+```
+
+**Function Arguments**
+```typescript
+present(errorMessage)
+```
+
+| Argument | Notes | Example |
+| --- | --- | --- |
+| errorMessage | Error message. | 'the value must be 5' |
+
+> [Code documentation](https://briza-insurance.github.io/wegood/modules/_rule_present_.html).
+
+* Non-empty array is evaluated as valid.
+* Empty string is evaluated as invalid.
+* Object, Function is evaluated as invalid.
+
+**Example**
+```typescript
+// The value must have some value.
+present('error message');
+```
 
 ### Equal
 Verify that the tested value is equal to another.
