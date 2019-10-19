@@ -8,11 +8,13 @@ import include from './rule/include'
 import length from './rule/length'
 import pattern from './rule/pattern'
 import range from './rule/range'
+import present from './rule/present'
 
 /**
  * Built-in validation rules
  */
 export {
+  present,
   date,
   equal,
   exclude,

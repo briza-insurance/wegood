@@ -29,6 +29,12 @@ yarn add @briza/wegood -D
 ---
 
 - [Basic Usage](#basic-usage)
+  - [Validator Methods](#validator-methods)
+    - [Rules](#rules)
+    - [Validate](#validate)
+    - [Valid](#valid)
+    - [Error](#error)
+    - [Errors](#errors)
 - [Builtin Validation Rules](#builtin-validation-rules)
   - [Present](#present)
   - [Equal](#equal)
@@ -38,6 +44,7 @@ yarn add @briza/wegood -D
   - [Exclude](#exclude)
   - [Include](#include)
   - [Date](#date)
+    - [Relative Date Offset](#relative-date-offset)
 - [Contributing](#contributing)
   - [Pull Request Process](#pull-request-process)
 - [License](#license)
@@ -95,6 +102,72 @@ ratingValidator.error(1);
 idValidator.errors('a1234-4');
 ```
 
+### Validator Methods
+```js
+// Import the Validator.
+import Validator from '@briza/wegood';
+import { present } from '@briza/wegood';
+
+// Create the validator.
+const validator = new Validator([present('this field is required.')]);
+```
+
+#### Rules
+Get the validator rules.
+
+> [Code documentation](https://briza-insurance.github.io/wegood/classes/_index_.validator.html#rules).
+
+```js
+validator.rules
+// validation rules (function[])
+```
+
+#### Validate
+Validate against the tested value.
+If all rules are satisfied, the return value is true, otherwise, the return value is an error message of the first failed rule.
+
+> Passing false as the seconds parameter, returns collection of all validation errors, if any.
+
+> [Code documentation](https://briza-insurance.github.io/wegood/classes/_index_.validator.html#validate).
+
+```js
+validator.validate(testedValue)
+// true | error message (string)
+
+validator.validate(testedValue, false)
+// true | error messages (string[])
+```
+
+#### Valid
+Validity predicate against the tested value.
+
+> [Code documentation](https://briza-insurance.github.io/wegood/classes/_index_.validator.html#valid).
+
+```js
+validator.valid(testedValue)
+// true | false
+```
+
+#### Error
+Get all validation errors, if any. Otherwise, it returns null.
+
+> [Code documentation](https://briza-insurance.github.io/wegood/classes/_index_.validator.html#errors).
+
+```js
+validator.error(testedValue)
+// null | error messages (string[])
+```
+
+#### Errors
+Get the first validation error, if any. Otherwise, it returns null.
+
+> [Code documentation](https://briza-insurance.github.io/wegood/classes/_index_.validator.html#error).
+
+```js
+validator.error(testedValue)
+// null | error message (string)
+```
+
 ## Builtin Validation Rules
 All builtin validation rules have this construct:
 ```typescript
@@ -120,9 +193,9 @@ present(errorMessage)
 
 > [Code documentation](https://briza-insurance.github.io/wegood/modules/_rule_present_.html).
 
-* Non-empty array is evaluated as valid.
-* Empty string is evaluated as invalid.
-* Object, Function is evaluated as invalid.
+* Non-empty array tested value is evaluated as valid.
+* Empty string tested value is evaluated as invalid.
+* Object, Function tested value throws an error.
 
 **Example**
 ```typescript
