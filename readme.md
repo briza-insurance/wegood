@@ -28,20 +28,18 @@ yarn add @briza/wegood -D
 
 ---
 
-- [wegood](#wegood)
-  - [About](#about)
-  - [Installation via NPM or Yarn](#installation-via-npm-or-yarn)
-  - [Basic Usage](#basic-usage)
-  - [Builtin Validation Rules](#builtin-validation-rules)
-    - [Equal](#equal)
-    - [Pattern](#pattern)
-    - [Range](#range)
-    - [Length](#length)
-    - [Exclude](#exclude)
-    - [Include](#include)
-  - [Contributing](#contributing)
-    - [Pull Request Process](#pull-request-process)
-  - [License](#license)
+- [Basic Usage](#basic-usage)
+- [Builtin Validation Rules](#builtin-validation-rules)
+  - [Equal](#equal)
+  - [Pattern](#pattern)
+  - [Range](#range)
+  - [Length](#length)
+  - [Exclude](#exclude)
+  - [Include](#include)
+  - [Date](#date)
+- [Contributing](#contributing)
+  - [Pull Request Process](#pull-request-process)
+- [License](#license)
 
 ---
 
@@ -268,6 +266,86 @@ include('error message', [1, 2, 3]);
 
 // The value must be contained in the list.
 include('error message', ['circle', 'square', 'triable']);
+```
+
+### Date
+Verify that the tested value is the date range.
+```js
+import { date } from '@briza/wegood';
+```
+
+**Function Arguments**
+```typescript
+date(errorMessage, start, end, transform)
+```
+| Argument | Notes | Example |
+| --- | --- | --- |
+| errorMessage | Error message. | 'the date in not in valid range.' |
+| start | Start date boundary - ```ISO date string``` (yyyy-mm-dd), ```Date object```, or [Relative Date Offset](#relative-date-offset). If set to ```undefined``` or ```null```, it is being ignored. | 3 |
+| end | End date boundary - ```ISO date string``` (yyyy-mm-dd), ```Date object```, or [Relative Date Offset](#relative-date-offset). If set to ```undefined``` or ```null```, it is being ignored. | 3 |
+| transform | Custom Date object transformer function. Optional. | ```(value) => new Date(value)``` |
+
+> [Code documentation](https://briza-insurance.github.io/wegood/modules/_rule_date_.html).
+
+#### Relative Date Offset
+Instead of a concrete ISO date string or Date object below annotated shortcodes might be used to set the date boundary relative to TODAY date.
+| Annotation | Meaning | Example |
+| -- | -- | -- |
+| 0 | Today. | 0 |
+| -1 | In past. | -1 |
+| 1 | In future. | 1 |
+| -Nd | N days in past, relative from today. | -10d | 
+| Nd | N days in past, relative from today. | 10d | 
+| -Nw | N weeks in past, relative from today. | -2w | 
+| Nw | N weeks in past, relative from today. | 2w | 
+| -Nm | N months in past, relative from today. | -6m | 
+| Nm | N months in past, relative from today. | 6m | 
+| -Ny | N years in past, relative from today. | -2y | 
+| Ny | N years in past, relative from today. | 2y | 
+
+**Example**
+```typescript
+/**
+ * The value (date) must between the given data range.
+ */
+// ISO strings
+date('error message', '2000-12-30', '2020-06-29');
+// Date objects
+date('error message', new Date('2000-12-30T00:00:00+0000'), new Date('2020-06-29T00:00:00+0000'));
+
+/**
+ * The value (date) must after the date.
+ */
+// ISO string
+date('error message', '2000-12-30');
+// Date object
+date('error message', new Date('2000-12-30T00:00:00+0000'))
+
+/**
+ * The value (date) must before the date.
+ */
+// ISO string
+date('error message', undefined|null, '2020-06-29');
+// Date object
+date('error message', undefined|null, new Date('2020-06-29T00:00:00+0000'))
+
+/**
+ * Relative offsets, relative to today.
+ */
+
+// Any date in past, until today.
+date('error message', -1, 0);
+
+// Any date in future, starts from today.
+date('error message', 0, 1);
+
+// Any date between 2 years ago, up to 3 months from today.
+date('error message', '-2y', '3m');
+
+// Combined fixed date with relative date.
+// Any date from 2000-12-30 until today.
+date('error message', '2000-12-30', 0);
+
 ```
 
 ---
