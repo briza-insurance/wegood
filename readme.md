@@ -110,6 +110,7 @@ import { equal } from '@briza/wegood';
 ```typescript
 equal(errorMessage, value|customMatcher)
 ```
+
 | Argument | Notes | Example |
 | --- | --- | --- |
 | errorMessage | Error message. | 'the value must be 5' |
@@ -139,6 +140,7 @@ import { pattern } from '@briza/wegood';
 ```typescript
 pattern(errorMessage, rx)
 ```
+
 | Argument | Notes | Example |
 | --- | --- | --- |
 | errorMessage | Error message. | 'invalid email format' |
@@ -164,6 +166,7 @@ import { range } from '@briza/wegood';
 ```typescript
 range(errorMessage, min, max)
 ```
+
 | Argument | Notes | Example |
 | --- | --- | --- |
 | errorMessage | Error message. | 'the value must be in range 3-10' |
@@ -188,6 +191,7 @@ range('error message', null|undefined, 10);
 Verify that the tested value is in the given string length range.
 - Applicable only on the string values, although the rule auto-converts numbers into strings.
 - Could be also used as MAX and MIN.
+
 ```js
 import { length } from '@briza/wegood';
 ```
@@ -196,6 +200,7 @@ import { length } from '@briza/wegood';
 ```typescript
 length(errorMessage, min, max)
 ```
+
 | Argument | Notes | Example |
 | --- | --- | --- |
 | errorMessage | Error message. | 'the value must be 3-10 characters long' |
@@ -226,6 +231,7 @@ import { exclude } from '@briza/wegood';
 ```typescript
 exclude(errorMessage, exclusions)
 ```
+
 | Argument | Notes | Example |
 | --- | --- | --- |
 | errorMessage | Error message. | 'invalid value' |
@@ -252,6 +258,7 @@ import { include } from '@briza/wegood';
 ```typescript
 include(errorMessage, inclusions)
 ```
+
 | Argument | Notes | Example |
 | --- | --- | --- |
 | errorMessage | Error message. | 'invalid value' |
@@ -278,6 +285,7 @@ import { date } from '@briza/wegood';
 ```typescript
 date(errorMessage, start, end, transform)
 ```
+
 | Argument | Notes | Example |
 | --- | --- | --- |
 | errorMessage | Error message. | 'the date in not in valid range.' |
@@ -289,6 +297,7 @@ date(errorMessage, start, end, transform)
 
 #### Relative Date Offset
 Instead of a concrete ISO date string or Date object below annotated shortcodes might be used to set the date boundary relative to TODAY date.
+
 | Annotation | Meaning | Example |
 | -- | -- | -- |
 | 0 | Today. | 0 |
