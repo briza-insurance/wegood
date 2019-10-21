@@ -104,7 +104,7 @@ idValidator.errors('a1234-4');
 idValidator.errors('a1234-4');
 
 // Return only the first error message of the not-satisfied rule, still returned as an array.
-idValidator.errors('a1234-4', true);
+idValidator.errors('a1234-4', true /* firstErrorOnly */);
 ```
 
 ### Validator Methods
@@ -137,7 +137,7 @@ The Validation Result is a object with these properties:
 
 | Property | Type | Note | Example |
 | --- | --- | --- | --- |
-| valid | boolean | Validity state. | ```true|false``` |
+| valid | boolean | Validity state. | ```true``` |
 | errors | string[] | Collection of captured validation errors. | ```['this field is required']``` |
 
 **Example**
