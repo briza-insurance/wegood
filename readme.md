@@ -32,8 +32,8 @@ yarn add @briza/wegood -D
   - [Validator Methods](#validator-methods)
     - [Rules](#rules)
     - [Validate](#validate)
+      - [Validation Result](#validation-result)
     - [Valid](#valid)
-    - [Error](#error)
     - [Errors](#errors)
 - [Builtin Validation Rules](#builtin-validation-rules)
   - [Present](#present)
@@ -84,24 +84,27 @@ const idValidator = new Validator([
  * Use one of the validation methods.
  */
 
-// Return true if valid,
-// error message of the first not-satisfied rule otherwise.
+// Return the validation result:
+// { valid: boolean, errors: [] }
+// Errors contains the error message of the first not-satisfied rule.
 ratingValidator.validate(1);
 
-// Return true if valid,
-// array of error messages of all not-satisfied rules otherwise.
+// Return the validation result:
+// { valid: boolean, errors: [] }
+// Errors contains the error message of all not-satisfied rules.
 idValidator.validate('a1234-4', false /* firstErrorOnly */);
 
 // Return true if valid, false otherwise.
 ratingValidator.valid(1);
 
-// Return null if there is no error,
-// error message of the first not-satisfied rule otherwise.
-ratingValidator.error(1);
-
-// Return null if there is no error,
-// array of error messages of all not-satisfied rules otherwise.
+// Return array of error messages of all not-satisfied rules.
 idValidator.errors('a1234-4');
+
+// Return array of error messages of all not-satisfied rules.
+idValidator.errors('a1234-4');
+
+// Return only the first error message of the not-satisfied rule, still returned as an array.
+idValidator.errors('a1234-4', true);
 ```
 
 ### Validator Methods
@@ -114,6 +117,8 @@ import { present } from '@briza/wegood';
 const validator = new Validator([present('this field is required.')]);
 ```
 
+There is collection of functions to provide implementation agnostic approach:
+
 #### Rules
 Get the validator rules.
 
@@ -125,8 +130,32 @@ validator.rules
 ```
 
 #### Validate
-Validate against the tested value.
-If all rules are satisfied, the return value is true, otherwise, the return value is an error message of the first failed rule.
+Validate against the tested value, it returns the [Validation Result](#validation-result).
+
+##### Validation Result
+The Validation Result is a object with these properties:
+
+| Property | Type | Note | Example |
+| --- | --- | --- | --- |
+| valid | boolean | Validity state. | ```true|false``` |
+| errors | string[] | Collection of captured validation errors. | ```['this field is required']``` |
+
+**Example**
+```js
+// Valid
+{
+  valid: true,
+  errors: []
+}
+
+// Invalid
+{
+  valid: false,
+  errors: ['invalid email format']
+}
+```
+
+---
 
 > Passing false as the seconds parameter, returns collection of all validation errors, if any.
 
@@ -134,10 +163,26 @@ If all rules are satisfied, the return value is true, otherwise, the return valu
 
 ```js
 validator.validate(testedValue)
-// true | error message (string)
+/**
+ * {
+ *  valid: true|false,
+ *  errors: []
+ * }
+ * 
+ * The errors will contain only first discovered error.
+ * 
+ */
 
 validator.validate(testedValue, false)
-// true | error messages (string[])
+/**
+ * {
+ *  valid: true|false,
+ *  errors: []
+ * }
+ * 
+ * The errors will contain all discovered error.
+ * 
+ */
 ```
 
 #### Valid
@@ -150,30 +195,27 @@ validator.valid(testedValue)
 // true | false
 ```
 
-#### Error
-Get all validation errors, if any. Otherwise, it returns null.
-
-> [Code documentation](https://briza-insurance.github.io/wegood/classes/_index_.validator.html#errors).
-
-```js
-validator.error(testedValue)
-// null | error messages (string[])
-```
-
 #### Errors
-Get the first validation error, if any. Otherwise, it returns null.
+Get the validation errors. if any.
 
 > [Code documentation](https://briza-insurance.github.io/wegood/classes/_index_.validator.html#error).
 
+> Passing true as the seconds parameter, returns only the first validation error, if any.
+
 ```js
-validator.error(testedValue)
-// null | error message (string)
+validator.errors(testedValue)
+// string[]
+// All errors will be captured.
+
+validator.errors(testedValue, true)
+// string[]
+// Only the first error will be captured.
 ```
 
 ## Builtin Validation Rules
 All builtin validation rules have this construct:
 ```typescript
-function rule(errorMessage: string, agr1: any, ... argN: any): (value: any) => true|false
+function rule(errorMessage: string, agr1: any, ... argN: any): (value: any) => true|string
 ```
 - A function which returns the validation rule function with set error message, plug-able into the Validator, or it could be used individually, e.g. ```rule('error message')(testValue)```.
 - The args differs form rule to rule.
@@ -487,7 +529,7 @@ function email(errorMsg: string): ValidationRule {
 
 ```
 
-- ValidationRule (typescript type) can be imported from the main package: ```import { ValidationRule } from '@briza/wegood'```, without TypeScript, the type just represents: ```(value) => true|string```, where:
+- ValidationRule (typescript type), represents: ```(value) => true|string```, where:
   - true = valid.
   - string = error message.
 

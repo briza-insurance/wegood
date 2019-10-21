@@ -7,7 +7,17 @@ import length from './rule/length';
 import pattern from './rule/pattern';
 import range from './rule/range';
 import present from './rule/present';
-export { ValidationRule, present, date, equal, exclude, include, length, pattern, range };
+/**
+ * Built-in validation rules
+ */
+export { present, date, equal, exclude, include, length, pattern, range };
+/**
+ * Validation result.
+ */
+export interface ValidationResult {
+    valid: boolean;
+    errors: string[];
+}
 /**
  * Validator
  *
@@ -34,9 +44,9 @@ export declare class Validator {
      * @param {boolean} firstErrorOnly Return only first error.
      * Defaults to true.
      * If set to false, it returns an array of errors, if any.
-     * @return {true|string|string[]}
+     * @return {ValidationResult}
      */
-    validate(value: any, firstErrorOnly?: boolean): true | string | string[];
+    validate(value: any, firstErrorOnly?: boolean): ValidationResult;
     /**
      * Validity predicate against the value.
      * @param {mixed} value Validated value.
@@ -44,18 +54,13 @@ export declare class Validator {
      */
     valid(value: any): boolean;
     /**
-     * Get the first validation error, if any.
-     * Otherwise it returns null.
-     * @param {mixed} value Validated value.
-     * @return {string|null}
-     */
-    error(value: any): string | null;
-    /**
      * Get all validation errors, if any.
-     * Otherwise it returns null.
+     * Otherwise it returns empty array.
      * @param {mixed} value Validated value.
-     * @return {string[]|null}
+     * @param {boolean} firstErrorOnly Return only first error.
+     * Defaults to false.
+     * @return {string[]}
      */
-    errors(value: any): string[] | null;
+    errors(value: any, firstErrorOnly?: boolean): string[];
 }
 export default Validator;

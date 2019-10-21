@@ -10,9 +10,10 @@ import pattern from './rule/pattern'
 import range from './rule/range'
 import present from './rule/present'
 
+/**
+ * Built-in validation rules
+ */
 export {
-  ValidationRule,
-  // Built-in validation rules
   present,
   date,
   equal,
@@ -21,6 +22,14 @@ export {
   length,
   pattern,
   range
+}
+
+/**
+ * Validation result.
+ */
+export interface ValidationResult {
+  valid: boolean;
+  errors: string[];
 }
 
 /**
@@ -64,21 +73,24 @@ export class Validator {
    * @param {boolean} firstErrorOnly Return only first error.
    * Defaults to true.
    * If set to false, it returns an array of errors, if any.
-   * @return {true|string|string[]}
+   * @return {ValidationResult}
    */
-  validate (value: any, firstErrorOnly = true): true|string|string[] {
-    const errors = []
+  validate (value: any, firstErrorOnly = true): ValidationResult {
+    const res: ValidationResult = {
+      valid: true,
+      errors: []
+    }
     for (const rule of this._rules) {
       const result = rule(value)
       if (result !== true) {
+        res.valid = false
+        res.errors.push(result)
         if (firstErrorOnly) {
-          return result
-        } else {
-          errors.push(result)
+          break
         }
       }
     }
-    return errors.length > 0 ? errors : true
+    return res
   }
 
   /**
@@ -97,36 +109,25 @@ export class Validator {
   }
 
   /**
-   * Get the first validation error, if any.
-   * Otherwise it returns null.
-   * @param {mixed} value Validated value.
-   * @return {string|null}
-   */
-  error (value: any): string|null {
-    for (const rule of this._rules) {
-      const result = rule(value)
-      if (result !== true) {
-        return result
-      }
-    }
-    return null
-  }
-
-  /**
    * Get all validation errors, if any.
-   * Otherwise it returns null.
+   * Otherwise it returns empty array.
    * @param {mixed} value Validated value.
-   * @return {string[]|null}
+   * @param {boolean} firstErrorOnly Return only first error.
+   * Defaults to false.
+   * @return {string[]}
    */
-  errors (value: any): string[]|null {
+  errors (value: any, firstErrorOnly = false): string[] {
     const errors = []
     for (const rule of this._rules) {
       const result = rule(value)
       if (result !== true) {
         errors.push(result)
+        if (firstErrorOnly) {
+          break
+        }
       }
     }
-    return errors.length > 0 ? errors : null
+    return errors
   }
 }
 

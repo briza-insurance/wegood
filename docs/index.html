@@ -99,9 +99,11 @@
 					<li><a href="#basic-usage">Basic Usage</a><ul>
 							<li><a href="#validator-methods">Validator Methods</a><ul>
 									<li><a href="#rules">Rules</a></li>
-									<li><a href="#validate">Validate</a></li>
+									<li><a href="#validate">Validate</a><ul>
+											<li><a href="#validation-result">Validation Result</a></li>
+										</ul>
+									</li>
 									<li><a href="#valid">Valid</a></li>
-									<li><a href="#error">Error</a></li>
 									<li><a href="#errors">Errors</a></li>
 								</ul>
 							</li>
@@ -162,24 +164,27 @@
  * Use one of the validation methods.
  */</span>
 
-<span class="hljs-comment">// Return true if valid,</span>
-<span class="hljs-comment">// error message of the first not-satisfied rule otherwise.</span>
+<span class="hljs-comment">// Return the validation result:</span>
+<span class="hljs-comment">// { valid: boolean, errors: [] }</span>
+<span class="hljs-comment">// Errors contains the error message of the first not-satisfied rule.</span>
 ratingValidator.validate(<span class="hljs-number">1</span>);
 
-<span class="hljs-comment">// Return true if valid,</span>
-<span class="hljs-comment">// array of error messages of all not-satisfied rules otherwise.</span>
+<span class="hljs-comment">// Return the validation result:</span>
+<span class="hljs-comment">// { valid: boolean, errors: [] }</span>
+<span class="hljs-comment">// Errors contains the error message of all not-satisfied rules.</span>
 idValidator.validate(<span class="hljs-string">'a1234-4'</span>, <span class="hljs-literal">false</span> <span class="hljs-comment">/* firstErrorOnly */</span>);
 
 <span class="hljs-comment">// Return true if valid, false otherwise.</span>
 ratingValidator.valid(<span class="hljs-number">1</span>);
 
-<span class="hljs-comment">// Return null if there is no error,</span>
-<span class="hljs-comment">// error message of the first not-satisfied rule otherwise.</span>
-ratingValidator.error(<span class="hljs-number">1</span>);
+<span class="hljs-comment">// Return array of error messages of all not-satisfied rules.</span>
+idValidator.errors(<span class="hljs-string">'a1234-4'</span>);
 
-<span class="hljs-comment">// Return null if there is no error,</span>
-<span class="hljs-comment">// array of error messages of all not-satisfied rules otherwise.</span>
-idValidator.errors(<span class="hljs-string">'a1234-4'</span>);</code></pre>
+<span class="hljs-comment">// Return array of error messages of all not-satisfied rules.</span>
+idValidator.errors(<span class="hljs-string">'a1234-4'</span>);
+
+<span class="hljs-comment">// Return only the first error message of the not-satisfied rule, still returned as an array.</span>
+idValidator.errors(<span class="hljs-string">'a1234-4'</span>, <span class="hljs-literal">true</span>);</code></pre>
 				<a href="#validator-methods" id="validator-methods" style="color: inherit; text-decoration: none;">
 					<h3>Validator Methods</h3>
 				</a>
@@ -189,6 +194,7 @@ idValidator.errors(<span class="hljs-string">'a1234-4'</span>);</code></pre>
 
 <span class="hljs-comment">// Create the validator.</span>
 <span class="hljs-keyword">const</span> validator = <span class="hljs-keyword">new</span> Validator([present(<span class="hljs-string">'this field is required.'</span>)]);</code></pre>
+				<p>There is collection of functions to provide implementation agnostic approach:</p>
 				<a href="#rules" id="rules" style="color: inherit; text-decoration: none;">
 					<h4>Rules</h4>
 				</a>
@@ -201,8 +207,46 @@ idValidator.errors(<span class="hljs-string">'a1234-4'</span>);</code></pre>
 				<a href="#validate" id="validate" style="color: inherit; text-decoration: none;">
 					<h4>Validate</h4>
 				</a>
-				<p>Validate against the tested value.
-				If all rules are satisfied, the return value is true, otherwise, the return value is an error message of the first failed rule.</p>
+				<p>Validate against the tested value, it returns the <a href="#validation-result">Validation Result</a>.</p>
+				<a href="#validation-result" id="validation-result" style="color: inherit; text-decoration: none;">
+					<h5>Validation Result</h5>
+				</a>
+				<p>The Validation Result is a object with these properties:</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Property</th>
+							<th>Type</th>
+							<th>Note</th>
+							<th>Example</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>valid</td>
+							<td>boolean</td>
+							<td>Validity state.</td>
+							<td>```true</td>
+						</tr>
+						<tr>
+							<td>errors</td>
+							<td>string[]</td>
+							<td>Collection of captured validation errors.</td>
+							<td><code>[&#39;this field is required&#39;]</code></td>
+						</tr>
+				</tbody></table>
+				<p><strong>Example</strong></p>
+				<pre><code class="language-js"><span class="hljs-comment">// Valid</span>
+{
+  <span class="hljs-attr">valid</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">errors</span>: []
+}
+
+<span class="hljs-comment">// Invalid</span>
+{
+  <span class="hljs-attr">valid</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">errors</span>: [<span class="hljs-string">'invalid email format'</span>]
+}</code></pre>
+				<hr>
 				<blockquote>
 					<p>Passing false as the seconds parameter, returns collection of all validation errors, if any.</p>
 				</blockquote>
@@ -210,10 +254,26 @@ idValidator.errors(<span class="hljs-string">'a1234-4'</span>);</code></pre>
 					<p><a href="https://briza-insurance.github.io/wegood/classes/_index_.validator.html#validate">Code documentation</a>.</p>
 				</blockquote>
 				<pre><code class="language-js">validator.validate(testedValue)
-<span class="hljs-comment">// true | error message (string)</span>
+<span class="hljs-comment">/**
+ * {
+ *  valid: true|false,
+ *  errors: []
+ * }
+ * 
+ * The errors will contain only first discovered error.
+ * 
+ */</span>
 
 validator.validate(testedValue, <span class="hljs-literal">false</span>)
-<span class="hljs-comment">// true | error messages (string[])</span></code></pre>
+<span class="hljs-comment">/**
+ * {
+ *  valid: true|false,
+ *  errors: []
+ * }
+ * 
+ * The errors will contain all discovered error.
+ * 
+ */</span></code></pre>
 				<a href="#valid" id="valid" style="color: inherit; text-decoration: none;">
 					<h4>Valid</h4>
 				</a>
@@ -223,29 +283,28 @@ validator.validate(testedValue, <span class="hljs-literal">false</span>)
 				</blockquote>
 				<pre><code class="language-js">validator.valid(testedValue)
 <span class="hljs-comment">// true | false</span></code></pre>
-				<a href="#error" id="error" style="color: inherit; text-decoration: none;">
-					<h4>Error</h4>
-				</a>
-				<p>Get all validation errors, if any. Otherwise, it returns null.</p>
-				<blockquote>
-					<p><a href="https://briza-insurance.github.io/wegood/classes/_index_.validator.html#errors">Code documentation</a>.</p>
-				</blockquote>
-				<pre><code class="language-js">validator.error(testedValue)
-<span class="hljs-comment">// null | error messages (string[])</span></code></pre>
 				<a href="#errors" id="errors" style="color: inherit; text-decoration: none;">
 					<h4>Errors</h4>
 				</a>
-				<p>Get the first validation error, if any. Otherwise, it returns null.</p>
+				<p>Get the validation errors. if any.</p>
 				<blockquote>
 					<p><a href="https://briza-insurance.github.io/wegood/classes/_index_.validator.html#error">Code documentation</a>.</p>
 				</blockquote>
-				<pre><code class="language-js">validator.error(testedValue)
-<span class="hljs-comment">// null | error message (string)</span></code></pre>
+				<blockquote>
+					<p>Passing true as the seconds parameter, returns only the first validation error, if any.</p>
+				</blockquote>
+				<pre><code class="language-js">validator.errors(testedValue)
+<span class="hljs-comment">// string[]</span>
+<span class="hljs-comment">// All errors will be captured.</span>
+
+validator.errors(testedValue, <span class="hljs-literal">true</span>)
+<span class="hljs-comment">// string[]</span>
+<span class="hljs-comment">// Only the first error will be captured.</span></code></pre>
 				<a href="#builtin-validation-rules" id="builtin-validation-rules" style="color: inherit; text-decoration: none;">
 					<h2>Builtin Validation Rules</h2>
 				</a>
 				<p>All builtin validation rules have this construct:</p>
-				<pre><code class="language-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">rule</span>(<span class="hljs-params">errorMessage: <span class="hljs-built_in">string</span>, agr1: <span class="hljs-built_in">any</span>, ... argN: <span class="hljs-built_in">any</span></span>): (<span class="hljs-params">value: <span class="hljs-built_in">any</span></span>) =&gt; <span class="hljs-title">true</span>|<span class="hljs-title">false</span></span></code></pre>
+				<pre><code class="language-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">rule</span>(<span class="hljs-params">errorMessage: <span class="hljs-built_in">string</span>, agr1: <span class="hljs-built_in">any</span>, ... argN: <span class="hljs-built_in">any</span></span>): (<span class="hljs-params">value: <span class="hljs-built_in">any</span></span>) =&gt; <span class="hljs-title">true</span>|<span class="hljs-title">string</span></span></code></pre>
 				<ul>
 					<li>A function which returns the validation rule function with set error message, plug-able into the Validator, or it could be used individually, e.g. <code>rule(&#39;error message&#39;)(testValue)</code>.</li>
 					<li>The args differs form rule to rule.</li>
@@ -693,7 +752,7 @@ date(<span class="hljs-string">'error message'</span>, <span class="hljs-string"
 }
 </code></pre>
 				<ul>
-					<li>ValidationRule (typescript type) can be imported from the main package: <code>import { ValidationRule } from &#39;@briza/wegood&#39;</code>, without TypeScript, the type just represents: <code>(value) =&gt; true|string</code>, where:<ul>
+					<li>ValidationRule (typescript type), represents: <code>(value) =&gt; true|string</code>, where:<ul>
 							<li>true = valid.</li>
 							<li>string = error message.</li>
 						</ul>

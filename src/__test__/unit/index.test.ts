@@ -28,14 +28,20 @@ describe('Validator', () => {
     ])
     const tests = [
       // Valid
-      {value: 5, expected: true},
+      {value: 5, expected: {
+        valid: true,
+        errors: []
+      }},
       // Invalid
-      {value: '1', expected: 'a'},
+      {value: '1', expected: {
+        valid: false,
+        errors: ['a']
+      }},
     ]
 
     for (const t of tests) {
       test(`Value: ${t.value}`, () => {
-        expect(validator.validate(t.value)).toBe(t.expected)
+        expect(validator.validate(t.value)).toEqual(t.expected)
       })
     }
   })
@@ -47,9 +53,15 @@ describe('Validator', () => {
     ])
     const tests = [
       // Valid
-      {value: 5, expected: true},
+      {value: 5, expected: {
+        valid: true,
+        errors: []
+      }},
       // Invalid
-      {value: '1', expected: ['a', 'b']},
+      {value: '1', expected: {
+        valid: false,
+        errors: ['a', 'b']
+      }},
     ]
 
     for (const t of tests) {
@@ -78,33 +90,33 @@ describe('Validator', () => {
     }
   })
 
-  describe('error', () => {
+  describe('errors - first error only', () => {
     const validator = new Validator([
       equal('a', 5),
       equal('b', 5)
     ])
     const tests = [
       // Valid
-      {value: 5, expected: null},
+      {value: 5, expected: []},
       // Invalid
-      {value: '1', expected: 'a'},
+      {value: '1', expected: ['a']},
     ]
 
     for (const t of tests) {
       test(`Value: ${t.value}`, () => {
-        expect(validator.error(t.value)).toBe(t.expected)
+        expect(validator.errors(t.value, true)).toEqual(t.expected)
       })
     }
   })
 
-  describe('errors', () => {
+  describe('errors - all errors', () => {
     const validator = new Validator([
       equal('a', 5),
       equal('b', 5)
     ])
     const tests = [
       // Valid
-      {value: 5, expected: null},
+      {value: 5, expected: []},
       // Invalid
       {value: '1', expected: ['a', 'b']},
     ]
