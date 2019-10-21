@@ -28,3 +28,9 @@ export declare function isFunction(value: any): boolean;
  * @return {boolean}
  */
 export declare function isDate(value: any): boolean;
+/**
+ * Is Object
+ * @param {mixed} value tested value
+ * @return {boolean} result of the test
+ */
+export declare function isObject(value: any): boolean;

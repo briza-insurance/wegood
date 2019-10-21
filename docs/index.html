@@ -69,7 +69,7 @@
 				</a>
 				<p>Tiny validation library, so wegood with data.</p>
 				<blockquote>
-					<p>Revision: October 19, 2019.</p>
+					<p>Revision: October 21, 2019.</p>
 				</blockquote>
 				<a href="#about" id="about" style="color: inherit; text-decoration: none;">
 					<h2>About</h2>
@@ -96,7 +96,17 @@
 				<p><strong>Table of Content</strong></p>
 				<hr>
 				<ul>
-					<li><a href="#basic-usage">Basic Usage</a></li>
+					<li><a href="#basic-usage">Basic Usage</a><ul>
+							<li><a href="#validator-methods">Validator Methods</a><ul>
+									<li><a href="#rules">Rules</a></li>
+									<li><a href="#validate">Validate</a></li>
+									<li><a href="#valid">Valid</a></li>
+									<li><a href="#error">Error</a></li>
+									<li><a href="#errors">Errors</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
 					<li><a href="#builtin-validation-rules">Builtin Validation Rules</a><ul>
 							<li><a href="#present">Present</a></li>
 							<li><a href="#equal">Equal</a></li>
@@ -105,9 +115,14 @@
 							<li><a href="#length">Length</a></li>
 							<li><a href="#exclude">Exclude</a></li>
 							<li><a href="#include">Include</a></li>
-							<li><a href="#date">Date</a></li>
+							<li><a href="#date">Date</a><ul>
+									<li><a href="#relative-date-offset">Relative Date Offset</a></li>
+									<li><a href="#date-tested-value-format">Date Tested Value Format</a></li>
+								</ul>
+							</li>
 						</ul>
 					</li>
+					<li><a href="#custom-validation-rule">Custom Validation Rule</a></li>
 					<li><a href="#contributing">Contributing</a><ul>
 							<li><a href="#pull-request-process">Pull Request Process</a></li>
 						</ul>
@@ -165,6 +180,67 @@ ratingValidator.error(<span class="hljs-number">1</span>);
 <span class="hljs-comment">// Return null if there is no error,</span>
 <span class="hljs-comment">// array of error messages of all not-satisfied rules otherwise.</span>
 idValidator.errors(<span class="hljs-string">'a1234-4'</span>);</code></pre>
+				<a href="#validator-methods" id="validator-methods" style="color: inherit; text-decoration: none;">
+					<h3>Validator Methods</h3>
+				</a>
+				<pre><code class="language-js"><span class="hljs-comment">// Import the Validator.</span>
+<span class="hljs-keyword">import</span> Validator <span class="hljs-keyword">from</span> <span class="hljs-string">'@briza/wegood'</span>;
+<span class="hljs-keyword">import</span> { present } <span class="hljs-keyword">from</span> <span class="hljs-string">'@briza/wegood'</span>;
+
+<span class="hljs-comment">// Create the validator.</span>
+<span class="hljs-keyword">const</span> validator = <span class="hljs-keyword">new</span> Validator([present(<span class="hljs-string">'this field is required.'</span>)]);</code></pre>
+				<a href="#rules" id="rules" style="color: inherit; text-decoration: none;">
+					<h4>Rules</h4>
+				</a>
+				<p>Get the validator rules.</p>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/classes/_index_.validator.html#rules">Code documentation</a>.</p>
+				</blockquote>
+				<pre><code class="language-js">validator.rules
+<span class="hljs-comment">// validation rules (function[])</span></code></pre>
+				<a href="#validate" id="validate" style="color: inherit; text-decoration: none;">
+					<h4>Validate</h4>
+				</a>
+				<p>Validate against the tested value.
+				If all rules are satisfied, the return value is true, otherwise, the return value is an error message of the first failed rule.</p>
+				<blockquote>
+					<p>Passing false as the seconds parameter, returns collection of all validation errors, if any.</p>
+				</blockquote>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/classes/_index_.validator.html#validate">Code documentation</a>.</p>
+				</blockquote>
+				<pre><code class="language-js">validator.validate(testedValue)
+<span class="hljs-comment">// true | error message (string)</span>
+
+validator.validate(testedValue, <span class="hljs-literal">false</span>)
+<span class="hljs-comment">// true | error messages (string[])</span></code></pre>
+				<a href="#valid" id="valid" style="color: inherit; text-decoration: none;">
+					<h4>Valid</h4>
+				</a>
+				<p>Validity predicate against the tested value.</p>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/classes/_index_.validator.html#valid">Code documentation</a>.</p>
+				</blockquote>
+				<pre><code class="language-js">validator.valid(testedValue)
+<span class="hljs-comment">// true | false</span></code></pre>
+				<a href="#error" id="error" style="color: inherit; text-decoration: none;">
+					<h4>Error</h4>
+				</a>
+				<p>Get all validation errors, if any. Otherwise, it returns null.</p>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/classes/_index_.validator.html#errors">Code documentation</a>.</p>
+				</blockquote>
+				<pre><code class="language-js">validator.error(testedValue)
+<span class="hljs-comment">// null | error messages (string[])</span></code></pre>
+				<a href="#errors" id="errors" style="color: inherit; text-decoration: none;">
+					<h4>Errors</h4>
+				</a>
+				<p>Get the first validation error, if any. Otherwise, it returns null.</p>
+				<blockquote>
+					<p><a href="https://briza-insurance.github.io/wegood/classes/_index_.validator.html#error">Code documentation</a>.</p>
+				</blockquote>
+				<pre><code class="language-js">validator.error(testedValue)
+<span class="hljs-comment">// null | error message (string)</span></code></pre>
 				<a href="#builtin-validation-rules" id="builtin-validation-rules" style="color: inherit; text-decoration: none;">
 					<h2>Builtin Validation Rules</h2>
 				</a>
@@ -173,6 +249,7 @@ idValidator.errors(<span class="hljs-string">'a1234-4'</span>);</code></pre>
 				<ul>
 					<li>A function which returns the validation rule function with set error message, plug-able into the Validator, or it could be used individually, e.g. <code>rule(&#39;error message&#39;)(testValue)</code>.</li>
 					<li>The args differs form rule to rule.</li>
+					<li>Please see <a href="#custom-validation-rule">Custom Validation Rule</a> for more information.</li>
 				</ul>
 				<a href="#present" id="present" style="color: inherit; text-decoration: none;">
 					<h3>Present</h3>
@@ -199,9 +276,9 @@ idValidator.errors(<span class="hljs-string">'a1234-4'</span>);</code></pre>
 					<p><a href="https://briza-insurance.github.io/wegood/modules/_rule_present_.html">Code documentation</a>.</p>
 				</blockquote>
 				<ul>
-					<li>Non-empty array is evaluated as valid.</li>
-					<li>Empty string is evaluated as invalid.</li>
-					<li>Object, Function is evaluated as invalid.</li>
+					<li>Non-empty array tested value is evaluated as valid.</li>
+					<li>Empty string tested value is evaluated as invalid.</li>
+					<li>Object, Function tested value throws an error.</li>
 				</ul>
 				<p><strong>Example</strong></p>
 				<pre><code class="language-typescript"><span class="hljs-comment">// The value must have some value.</span>
@@ -593,6 +670,35 @@ date(<span class="hljs-string">'error message'</span>, <span class="hljs-string"
 <span class="hljs-comment">// Any date from 2000-12-30 until today.</span>
 date(<span class="hljs-string">'error message'</span>, <span class="hljs-string">'2000-12-30'</span>, <span class="hljs-number">0</span>);
 </code></pre>
+				<a href="#date-tested-value-format" id="date-tested-value-format" style="color: inherit; text-decoration: none;">
+					<h4>Date Tested Value Format</h4>
+				</a>
+				<p>The tested value must be passed to the validation rule in the <code>ISO date string</code> (yyyy-mm-dd) or as a <code>Date object</code>, otherwise the validation rule throws an error. The <strong>transform</strong> function could be passed to the rule to handle custom conversion from mixed value into the Date object.</p>
+				<pre><code class="language-typescript"><span class="hljs-comment">// Custom transform function</span>
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-string">'2000-12-30'</span>, <span class="hljs-string">'2020-06-29'</span>, <span class="hljs-function">(<span class="hljs-params">value</span>) =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(value));</code></pre>
+				<a href="#custom-validation-rule" id="custom-validation-rule" style="color: inherit; text-decoration: none;">
+					<h2>Custom Validation Rule</h2>
+				</a>
+				<p>Validation rule blueprint (typescript):</p>
+				<pre><code class="language-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">email</span>(<span class="hljs-params">errorMsg: <span class="hljs-built_in">string</span></span>): <span class="hljs-title">ValidationRule</span> </span>{
+  <span class="hljs-keyword">const</span> rx = <span class="hljs-regexp">/^[^@]+@.*\.[a-z]{2,5}$/</span>
+  <span class="hljs-keyword">return</span> (value: <span class="hljs-built_in">any</span>): <span class="hljs-literal">true</span>|<span class="hljs-built_in">string</span> {
+    <span class="hljs-comment">// Invalid value</span>
+    <span class="hljs-keyword">if</span> (value.match(rx) === <span class="hljs-literal">null</span>) {
+      <span class="hljs-keyword">return</span> errorMsg
+    }
+    <span class="hljs-comment">// Valid value</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+  }
+}
+</code></pre>
+				<ul>
+					<li>ValidationRule (typescript type) can be imported from the main package: <code>import { ValidationRule } from &#39;@briza/wegood&#39;</code>, without TypeScript, the type just represents: <code>(value) =&gt; true|string</code>, where:<ul>
+							<li>true = valid.</li>
+							<li>string = error message.</li>
+						</ul>
+					</li>
+				</ul>
 				<hr>
 				<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
 					<h2>Contributing</h2>

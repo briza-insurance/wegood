@@ -1,7 +1,7 @@
 # wegood
 Tiny validation library, so wegood with data.
 
-> Revision: October 19, 2019.
+> Revision: October 21, 2019.
 
 ## About
 This project has been developed to provide a shared validation logic between front-end and back-end code, easily extend-able with custom rules.
@@ -45,6 +45,8 @@ yarn add @briza/wegood -D
   - [Include](#include)
   - [Date](#date)
     - [Relative Date Offset](#relative-date-offset)
+    - [Date Tested Value Format](#date-tested-value-format)
+- [Custom Validation Rule](#custom-validation-rule)
 - [Contributing](#contributing)
   - [Pull Request Process](#pull-request-process)
 - [License](#license)
@@ -175,6 +177,7 @@ function rule(errorMessage: string, agr1: any, ... argN: any): (value: any) => t
 ```
 - A function which returns the validation rule function with set error message, plug-able into the Validator, or it could be used individually, e.g. ```rule('error message')(testValue)```.
 - The args differs form rule to rule.
+- Please see [Custom Validation Rule](#custom-validation-rule) for more information.
 
 ### Present
 Verify that the tested value is present, i.e. not empty.
@@ -459,6 +462,34 @@ date('error message', '-2y', '3m');
 date('error message', '2000-12-30', 0);
 
 ```
+
+#### Date Tested Value Format
+The tested value must be passed to the validation rule in the ```ISO date string``` (yyyy-mm-dd) or as a ```Date object```, otherwise the validation rule throws an error. The **transform** function could be passed to the rule to handle custom conversion from mixed value into the Date object.
+```typescript
+// Custom transform function
+date('error message', '2000-12-30', '2020-06-29', (value) => new Date(value));
+```
+
+## Custom Validation Rule
+Validation rule blueprint (typescript):
+```typescript
+function email(errorMsg: string): ValidationRule {
+  const rx = /^[^@]+@.*\.[a-z]{2,5}$/
+  return (value: any): true|string {
+    // Invalid value
+    if (value.match(rx) === null) {
+      return errorMsg
+    }
+    // Valid value
+    return true
+  }
+}
+
+```
+
+- ValidationRule (typescript type) can be imported from the main package: ```import { ValidationRule } from '@briza/wegood'```, without TypeScript, the type just represents: ```(value) => true|string```, where:
+  - true = valid.
+  - string = error message.
 
 ---
 

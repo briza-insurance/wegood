@@ -6,10 +6,8 @@ import include from './rule/include';
 import length from './rule/length';
 import pattern from './rule/pattern';
 import range from './rule/range';
-/**
- * Built-in validation rules
- */
-export { date, equal, exclude, include, length, pattern, range };
+import present from './rule/present';
+export { ValidationRule, present, date, equal, exclude, include, length, pattern, range };
 /**
  * Validator
  *

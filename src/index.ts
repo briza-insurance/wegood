@@ -10,10 +10,9 @@ import pattern from './rule/pattern'
 import range from './rule/range'
 import present from './rule/present'
 
-/**
- * Built-in validation rules
- */
 export {
+  ValidationRule,
+  // Built-in validation rules
   present,
   date,
   equal,
