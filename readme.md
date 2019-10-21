@@ -547,4 +547,4 @@ When contributing to this repository, please first discuss the change you wish t
 > Please make an issue first if the change is likely to increase.
 
 ## License
-Illogical is released under the MIT license. See [LICENSE.txt](https://github.com/briza-insurance/wegood/blob/master/LICENSE.txt).
+wegood is released under the MIT license. See [LICENSE.txt](https://github.com/briza-insurance/wegood/blob/master/LICENSE.txt).
