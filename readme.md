@@ -1,7 +1,7 @@
 # wegood
 Tiny validation library, so wegood with data.
 
-> Revision: October 21, 2019.
+> Revision: October 25, 2019.
 
 ## About
 This project has been developed to provide a shared validation logic between front-end and back-end code, easily extend-able with custom rules.
@@ -222,7 +222,7 @@ function rule(errorMessage: string, agr1: any, ... argN: any): (value: any) => t
 - Please see [Custom Validation Rule](#custom-validation-rule) for more information.
 
 ### Present
-Verify that the tested value is present, i.e. not empty.
+Verify that the tested value is present, i.e. defined and not empty.
 ```js
 import { present } from '@briza/wegood';
 ```
@@ -286,13 +286,13 @@ import { pattern } from '@briza/wegood';
 
 **Function Arguments**
 ```typescript
-pattern(errorMessage, rx)
+pattern(errorMessage, pattern)
 ```
 
 | Argument | Notes | Example |
 | --- | --- | --- |
 | errorMessage | Error message. | 'invalid email format' |
-| rx | Regular expression used to validate the value. | ```/^[^@]+@.*\.[a-z]{2, 5}$/``` |
+| pattern | Regular expression used to validate the value. | ```/^[^@]+@.*\.[a-z]{2, 5}$/``` |
 
 > [Code documentation](https://briza-insurance.github.io/wegood/modules/_rule_pattern_.html).
 
@@ -303,7 +303,7 @@ pattern('error message', /^[^@]+@.*\.[a-z]{2, 5}$/);
 ```
 
 ### Range
-Verify that the tested value is in the given range.
+Verify that the tested value is in the given range (inclusive).
 - Applicable only on the number values, although the rule auto-converts string into number if it is a valid number.
 - Could be also used as MAX and MIN.
 ```js
@@ -336,7 +336,7 @@ range('error message', null|undefined, 10);
 ```
 
 ### Length
-Verify that the tested value is in the given string length range.
+Verify that the tested value is in the given string length range (inclusive).
 - Applicable only on the string values, although the rule auto-converts numbers into strings.
 - Could be also used as MAX and MIN.
 

@@ -8,11 +8,11 @@ import {
 /**
  * Pattern validation rule.
  * @param {string} errorMsg Error message.
- * @param {RegExp} rx Regular expression.
+ * @param {RegExp} pattern Regular expression.
  * @return {ValidationRule} validation function, fn(value) => true|string,
  * returns true when valid, error message otherwise.
  */
-function pattern (errorMsg: string, rx: RegExp): ValidationRule {
+function pattern (errorMsg: string, pattern: RegExp): ValidationRule {
   return (value): true|string => {
     if (isNullOrUndefined(value)) {
       return errorMsg
@@ -27,7 +27,7 @@ function pattern (errorMsg: string, rx: RegExp): ValidationRule {
       return errorMsg
     }
 
-    if (value.match(rx) === null) {
+    if (value.match(pattern) === null) {
       return errorMsg
     }
 
