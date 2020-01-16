@@ -30,6 +30,10 @@ describe('Validator - Rule - Date', () => {
     {value: today, start: -1, end: 0, expected: true},
     // Today
     {value: today, start: 0, end: 0, expected: true},
+    // Future start
+    {value: today, start: 1, end: undefined, expected: true},
+    // Past end
+    {value: new Date('2000-12-29T00:00:00+0000'), start: undefined, end: -1, expected: true},
     // Specific past<->today
     {value: today, start: '2000-12-29', end: 0, expected: true},
     {
@@ -66,6 +70,18 @@ describe('Validator - Rule - Date', () => {
     {
       value: new Date('2001-01-01T00:00:00+0000'),
       start: 0, end: '2y',
+      expected: true
+    },
+    // Future start
+    {
+      value: new Date('2001-01-05T00:00:00+0000'),
+      start: '3d', end: undefined,
+      expected: true
+    },
+    // Past end
+    {
+      value: new Date('2000-12-20T00:00:00+0000'),
+      start: -1, end: '-3d',
       expected: true
     },
     // String value

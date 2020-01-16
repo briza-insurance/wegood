@@ -77,7 +77,7 @@ function dateBoundary (
   dir: BoundaryType
 ): (date: Date) => boolean {
   if (isNullOrUndefined(filter)) {
-    return (): boolean => false
+    return (): boolean => true
   }
 
   // Boundary offset in days
@@ -112,6 +112,12 @@ function dateBoundary (
         // or -1,0,1 (in past, today, in future)
       } else if (['-1', '1'].includes(filter as string)) {
         offset = Infinity * parseInt(filter as string)
+        // Flip of the offset for flipped boundaries
+        if ((dir === BoundaryType.Start && offset > 0) ||
+          (dir === BoundaryType.End && offset < 0)
+        ) {
+          offset *= -1
+        }
 
         // Illegal offset
       } else if (filter !== '0') {
