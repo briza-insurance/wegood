@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /**
  * Is Null or Undefined predicate.
  * @param {mixed} value Rested value.

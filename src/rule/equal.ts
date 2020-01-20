@@ -5,6 +5,7 @@ import {
 } from '../common/type-check'
 
 // Custom equality predicate function
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type EqualPredicate = (value: any) => boolean
 
 /**
@@ -15,7 +16,11 @@ type EqualPredicate = (value: any) => boolean
  * @return {ValidationRule} validation function, fn(value) => true|string,
  * returns true when valid, error message otherwise.
  */
-function equal (errorMsg: string, arg: any|EqualPredicate): ValidationRule {
+function equal (
+  errorMsg: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  arg: any|EqualPredicate
+): ValidationRule {
   const customEqualPredicate = isFunction(arg)
   return (value): true|string => {
     if (customEqualPredicate === false && isNullOrUndefined(value)) {
