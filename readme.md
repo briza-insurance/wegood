@@ -468,7 +468,7 @@ Instead of a concrete ISO date string or Date object below annotated shortcodes 
 // ISO strings
 date('error message', '2000-12-30', '2020-06-29');
 // Date objects
-date('error message', new Date('2000-12-30T00:00:00+0000'), new Date('2020-06-29T00:00:00+0000'));
+date('error message', new Date('2000-12-30T00:00:00+00:00'), new Date('2020-06-29T00:00:00+00:00'));
 
 /**
  * The value (date) must after the date.
@@ -476,7 +476,7 @@ date('error message', new Date('2000-12-30T00:00:00+0000'), new Date('2020-06-29
 // ISO string
 date('error message', '2000-12-30');
 // Date object
-date('error message', new Date('2000-12-30T00:00:00+0000'))
+date('error message', new Date('2000-12-30T00:00:00+00:00'))
 
 /**
  * The value (date) must before the date.
@@ -484,7 +484,7 @@ date('error message', new Date('2000-12-30T00:00:00+0000'))
 // ISO string
 date('error message', undefined|null, '2020-06-29');
 // Date object
-date('error message', undefined|null, new Date('2020-06-29T00:00:00+0000'))
+date('error message', undefined|null, new Date('2020-06-29T00:00:00+00:00'))
 
 /**
  * Relative offsets, relative to today.
