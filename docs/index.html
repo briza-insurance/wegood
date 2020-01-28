@@ -694,7 +694,7 @@ include(<span class="hljs-string">'error message'</span>, [<span class="hljs-str
 <span class="hljs-comment">// ISO strings</span>
 date(<span class="hljs-string">'error message'</span>, <span class="hljs-string">'2000-12-30'</span>, <span class="hljs-string">'2020-06-29'</span>);
 <span class="hljs-comment">// Date objects</span>
-date(<span class="hljs-string">'error message'</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2000-12-30T00:00:00+0000'</span>), <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2020-06-29T00:00:00+0000'</span>));
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2000-12-30T00:00:00+00:00'</span>), <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2020-06-29T00:00:00+00:00'</span>));
 
 <span class="hljs-comment">/**
  * The value (date) must after the date.
@@ -702,7 +702,7 @@ date(<span class="hljs-string">'error message'</span>, <span class="hljs-keyword
 <span class="hljs-comment">// ISO string</span>
 date(<span class="hljs-string">'error message'</span>, <span class="hljs-string">'2000-12-30'</span>);
 <span class="hljs-comment">// Date object</span>
-date(<span class="hljs-string">'error message'</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2000-12-30T00:00:00+0000'</span>))
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2000-12-30T00:00:00+00:00'</span>))
 
 <span class="hljs-comment">/**
  * The value (date) must before the date.
@@ -710,7 +710,7 @@ date(<span class="hljs-string">'error message'</span>, <span class="hljs-keyword
 <span class="hljs-comment">// ISO string</span>
 date(<span class="hljs-string">'error message'</span>, <span class="hljs-literal">undefined</span>|<span class="hljs-literal">null</span>, <span class="hljs-string">'2020-06-29'</span>);
 <span class="hljs-comment">// Date object</span>
-date(<span class="hljs-string">'error message'</span>, <span class="hljs-literal">undefined</span>|<span class="hljs-literal">null</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2020-06-29T00:00:00+0000'</span>))
+date(<span class="hljs-string">'error message'</span>, <span class="hljs-literal">undefined</span>|<span class="hljs-literal">null</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2020-06-29T00:00:00+00:00'</span>))
 
 <span class="hljs-comment">/**
  * Relative offsets, relative to today.
