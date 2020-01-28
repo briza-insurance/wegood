@@ -1,7 +1,7 @@
 # wegood
 Tiny validation library, so wegood with data.
 
-> Revision: January 16, 2020.
+> Revision: January 27, 2020.
 
 ## About
 This project has been developed to provide a shared validation logic between front-end and back-end code, easily extend-able with custom rules.
