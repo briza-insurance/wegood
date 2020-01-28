@@ -1,5 +1,9 @@
 # wegood changelog
 
+## 1.0.3
+
+* Bug fix: changed date ISO format to YYYY-MM-DDThh:mm:ss+hh:mm, to support Safari.
+
 ## 1.0.2
 
 * Add support for isolated start and end dates.
