@@ -110,13 +110,16 @@ function dateBoundary (
         offset = dateOffset(dynamicOffset)
 
         // or -1,0,1 (in past, today, in future)
-      } else if (['-1', '1'].includes(filter as string)) {
+      } else if (['-1', '1'].includes(`${filter}`)) {
         offset = Infinity * parseInt(filter as string)
-        // Flip of the offset for flipped boundaries
-        if ((dir === BoundaryType.Start && offset > 0) ||
-          (dir === BoundaryType.End && offset < 0)
-        ) {
-          offset *= -1
+
+        // Start 1 = tomorrow
+        if (dir === BoundaryType.Start && offset > 0) {
+          offset = 1 // 1 day in future, dynamic offset.
+        }
+        // End -1 = any date in past
+        if (dir === BoundaryType.End && offset < 0) {
+          offset = -1 // 1 day in past, dynamic offset.
         }
 
         // Illegal offset
