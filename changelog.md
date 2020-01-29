@@ -1,5 +1,9 @@
 # wegood changelog
 
+## 1.0.5
+
+* Bug fix: remove timezone dependency.
+
 ## 1.0.4
 
 * Bug fix: future start, past end, expressed as 1 or -1.

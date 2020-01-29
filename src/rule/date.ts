@@ -96,7 +96,7 @@ function dateBoundary (
     // Parse ISO date string if provided
     if ((filter as string).match(/^\d{4}-[0,1]\d-[0-3]\d$/)) {
       isDateFilter = true
-      filter = new Date(`${filter}T00:00:00+00:00`)
+      filter = new Date(`${filter}T00:00:00`)
       if (isNaN(filter.getTime())) {
         throw new Error(`invalid "${filter}" ISO date string`)
       }
@@ -192,7 +192,7 @@ function date (
 
         // ISO format
       } else if (value.match(/^\d{4}-[0,1]\d-[0-3]\d$/)) {
-        value = new Date(`${value}T00:00:00+00:00`)
+        value = new Date(`${value}T00:00:00`)
 
         // Invalid
       } else {
