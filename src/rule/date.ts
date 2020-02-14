@@ -147,6 +147,24 @@ function dateBoundary (
 }
 
 /**
+ * Get local timezone offset as ISO string
+ * E.g. '-05:00'
+ * @return {string} ISO timezone offset string
+ */
+function getISOTimezoneOffset (): string {
+  function pad (value: number): string|number {
+    return value < 10 ? '0' + value : value
+  }
+
+  const date = new Date()
+  const sign = (date.getTimezoneOffset() > 0) ? '-' : '+'
+  const offset = Math.abs(date.getTimezoneOffset())
+  const hours = pad(Math.floor(offset / 60))
+  const minutes = pad(offset % 60)
+  return sign + hours + ':' + minutes
+}
+
+/**
  * Date validation rule.
  * The value passed into the validation function must be a Date object
  * or ISO date string: yyyy-mm-dd. Or a custom transform function can
@@ -192,7 +210,7 @@ function date (
 
         // ISO format
       } else if (value.match(/^\d{4}-[0,1]\d-[0-3]\d$/)) {
-        value = new Date(`${value}T00:00:00`)
+        value = new Date(`${value}T00:00:00${getISOTimezoneOffset()}`)
 
         // Invalid
       } else {

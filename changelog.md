@@ -1,5 +1,9 @@
 # wegood changelog
 
+## 1.0.6
+
+* Bug fix: re-instate timezone dependency, but local timezone offset instead.
+
 ## 1.0.5
 
 * Bug fix: remove timezone dependency.
