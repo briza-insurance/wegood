@@ -35,7 +35,7 @@ export declare class Validator {
      * Get the validator rules.
      * @return {ValidationRule[]}
      */
-    readonly rules: ValidationRule[];
+    get rules(): ValidationRule[];
     /**
      * Validate against the value.
      * If all rules are satisfied, the return value is true.
