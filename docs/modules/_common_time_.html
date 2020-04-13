@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;rule/exclude&quot; | @briza/wegood</title>
+	<title>&quot;common/time&quot; | @briza/wegood</title>
 	<meta name="description" content="Documentation for @briza/wegood">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_rule_exclude_.html">&quot;rule/exclude&quot;</a>
+					<a href="_common_time_.html">&quot;common/time&quot;</a>
 				</li>
 			</ul>
-			<h1>Module &quot;rule/exclude&quot;</h1>
+			<h1>Module &quot;common/time&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_rule_exclude_.html#exclude" class="tsd-kind-icon">exclude</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_common_time_.html#today" class="tsd-kind-icon">today</a></li>
 							</ul>
 						</section>
 					</div>
@@ -82,41 +82,24 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="exclude" class="tsd-anchor"></a>
-					<h3>exclude</h3>
+					<a name="today" class="tsd-anchor"></a>
+					<h3>today</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">exclude<span class="tsd-signature-symbol">(</span>errorMsg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, exclusions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_rule_index_.html#validationrule" class="tsd-signature-type">ValidationRule</a></li>
+						<li class="tsd-signature tsd-kind-icon">today<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/briza-insurance/wegood/blob/b72b10f/src/rule/exclude.ts#L15">rule/exclude.ts:15</a></li>
+									<li>Defined in common/time.ts:4</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Exclude validation rule.</p>
+									<p>Get today date.</p>
 								</div>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>errorMsg: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Error message.</p>
-									</div>
-								</li>
-								<li>
-									<h5>exclusions: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>List of exclusions.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_rule_index_.html#validationrule" class="tsd-signature-type">ValidationRule</a></h4>
-							<p>validation function, fn(value) =&gt; true|string,
-							returns true when valid, error message otherwise.</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Date</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -128,7 +111,7 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="_common_time_.html">&quot;common/time&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -143,7 +126,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_rule_equal_.html">&quot;rule/equal&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="_rule_exclude_.html">&quot;rule/exclude&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -172,7 +155,7 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="_rule_exclude_.html#exclude" class="tsd-kind-icon">exclude</a>
+						<a href="_common_time_.html#today" class="tsd-kind-icon">today</a>
 					</li>
 				</ul>
 			</nav>

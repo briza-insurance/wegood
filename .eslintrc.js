@@ -2,21 +2,22 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2018,
-    sourceType: 'module',
+    sourceType: 'module'
   },
   plugins: [
-    '@typescript-eslint',
+    'simple-import-sort',
+    '@typescript-eslint'
   ],
   settings: {
     'import/parsers': {
-      '@typescript-eslint/parser': ['.ts'],
+      '@typescript-eslint/parser': ['.ts']
     },
     'import/resolver': {
-      typescript: {},
-    },
+      typescript: {}
+    }
   },
   extends: [
     'standard',
     'plugin:@typescript-eslint/recommended'
-  ],
-};
+  ]
+}

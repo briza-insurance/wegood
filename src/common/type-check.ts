@@ -2,8 +2,8 @@
 
 /**
  * Is Null or Undefined predicate.
- * @param {mixed} value Rested value.
- * @return {boolean}
+ * @param value Rested value.
+ * @return
  */
 export function isNullOrUndefined (value: any): boolean {
   return typeof value === 'undefined' || value === null
@@ -11,26 +11,26 @@ export function isNullOrUndefined (value: any): boolean {
 
 /**
  * Is number predicate.
- * @param {mixed} value Tested value.
- * @return {boolean}
+ * @param value Tested value.
+ * @return
  */
-export function isNumber (value: any): boolean {
+export function isNumber (value: any): value is number {
   return typeof value === 'number' && isFinite(value)
 }
 
 /**
  * Is string type predicate.
- * @param {mixed} value
- * @return {boolean}
+ * @param value
+ * @return
  */
-export function isString (value: any): boolean {
+export function isString (value: any): value is string {
   return typeof value === 'string' || value instanceof String
 }
 
 /**
  * Is function type predicate.
- * @param {mixed} value
- * @return {boolean}
+ * @param value
+ * @return
  */
 export function isFunction (value: any): boolean {
   return typeof value === 'function'
@@ -38,17 +38,17 @@ export function isFunction (value: any): boolean {
 
 /**
  * Is date type predicate.
- * @param {mixed} value
- * @return {boolean}
+ * @param value
+ * @return
  */
-export function isDate (value: any): boolean {
+export function isDate (value: any): value is Date {
   return value instanceof Date
 }
 
 /**
  * Is Object
- * @param {mixed} value tested value
- * @return {boolean} result of the test
+ * @param value tested value
+ * @return result of the test
  */
 export function isObject (value: any): boolean {
   return typeof value === 'object' && value.constructor === Object

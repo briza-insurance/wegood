@@ -1,5 +1,9 @@
 # wegood changelog
 
+## 1.0.7
+
+* Feature: added new validation rule "year".
+
 ## 1.0.6
 
 * Bug fix: re-instate timezone dependency, but local timezone offset instead.

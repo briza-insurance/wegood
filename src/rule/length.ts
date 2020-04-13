@@ -7,18 +7,18 @@ import {
 
 /**
  * Length validation rule.
- * @param {string} errorMsg Error message.
- * @param {null|undefined|number} min Minimal length. If null or undefined,
+ * @param errorMsg Error message.
+ * @param min Minimal length. If null or undefined,
  * there is no min length.
- * @param {null|undefined|number} max Maximal length. If null or undefined,
+ * @param max Maximal length. If null or undefined,
  * there is no max length.
- * @return {ValidationRule} validation function, fn(value) => true|string,
+ * @return validation function, fn(value) => true|string,
  * returns true when valid, error message otherwise.
  */
 function length (
   errorMsg: string,
-  min: null|undefined|number,
-  max: null|undefined|number
+  min: null | undefined | number,
+  max: null | undefined | number
 ): ValidationRule {
   const minLength = isNumber(min)
   const maxLength = isNumber(max)
@@ -29,7 +29,7 @@ function length (
       no validation effect, it will be always validated as true.`)
   }
 
-  return (value): true|string => {
+  return (value): true | string => {
     if (isNullOrUndefined(value)) {
       return errorMsg
     }

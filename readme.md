@@ -1,7 +1,7 @@
 # wegood
 Tiny validation library, so wegood with data.
 
-> Revision: January 29, 2020.
+> Revision: April 13, 2020.
 
 ## About
 This project has been developed to provide a shared validation logic between front-end and back-end code, easily extend-able with custom rules.
@@ -46,6 +46,9 @@ yarn add @briza/wegood -D
   - [Date](#date)
     - [Relative Date Offset](#relative-date-offset)
     - [Date Tested Value Format](#date-tested-value-format)
+  - [Year](#year)
+    - [Relative Year Offset](#relative-year-offset)
+    - [Year Tested Value Format](#year-tested-value-format)
 - [Custom Validation Rule](#custom-validation-rule)
 - [Contributing](#contributing)
   - [Pull Request Process](#pull-request-process)
@@ -437,14 +440,14 @@ date(errorMessage, start, end, transform)
 | Argument | Notes | Example |
 | --- | --- | --- |
 | errorMessage | Error message. | 'the date in not in valid range.' |
-| start | Start date boundary - ```ISO date string``` (yyyy-mm-dd), ```Date object```, or [Relative Date Offset](#relative-date-offset). If set to ```undefined``` or ```null```, it is being ignored. | 3 |
-| end | End date boundary - ```ISO date string``` (yyyy-mm-dd), ```Date object```, or [Relative Date Offset](#relative-date-offset). If set to ```undefined``` or ```null```, it is being ignored. | 3 |
+| start | Start date boundary: ```ISO date string``` (yyyy-mm-dd), ```Date object```, or [Relative Date Offset](#relative-date-offset). If set to ```undefined``` or ```null```, it is being ignored. | 2020-03-16 |
+| end | End date boundary: ```ISO date string``` (yyyy-mm-dd), ```Date object```, or [Relative Date Offset](#relative-date-offset). If set to ```undefined``` or ```null```, it is being ignored. | 3y |
 | transform | Custom Date object transformer function. Optional. | ```(value) => new Date(value)``` |
 
 > [Code documentation](https://briza-insurance.github.io/wegood/modules/_rule_date_.html).
 
 #### Relative Date Offset
-Instead of a concrete ISO date string or Date object below annotated shortcodes might be used to set the date boundary relative to TODAY date.
+Instead of a concrete ISO date string or Date object below annotated shortcodes may be used to set the date boundary relative to TODAY date.
 
 | Annotation | Meaning | Example |
 | -- | -- | -- |
@@ -511,6 +514,70 @@ The tested value must be passed to the validation rule in the ```ISO date string
 // Custom transform function
 date('error message', '2000-12-30', '2020-06-29', (value) => new Date(value));
 ```
+
+### Year
+Verify that the tested value is in the year range.
+```js
+import { year } from '@briza/wegood';
+```
+
+**Function Arguments**
+```typescript
+year(errorMessage, start, end)
+```
+
+| Argument | Notes | Example |
+| --- | --- | --- |
+| errorMessage | Error message. | 'the year in not in valid range.' |
+| start | Start date boundary: ```4-digit year number``` or [Relative Year Offset](#relative-year-offset). If set to ```undefined``` or ```null```, it is being ignored. | 2000 |
+| end | End date boundary: ```4-digit year number``` or [Relative Year Offset](#relative-year-offset). If set to ```undefined``` or ```null```, it is being ignored. | 3y |
+
+> [Code documentation](https://briza-insurance.github.io/wegood/modules/_rule_year_.html).
+
+#### Relative Year Offset
+Instead of a concrete year below annotated shortcodes may be used to set the year boundary relative to the CURRENT year.
+
+| Annotation | Meaning | Example |
+| -- | -- | -- |
+| 0 | Current year. | 0 |
+| -1 | In past. | -1 |
+| 1 | In future. | 1 |
+| -Ny | N years in past, relative from current year. | -2y | 
+| Ny | N years in past, relative from current year. | 2y | 
+
+**Example**
+```typescript
+// The value (year) must between the given years range.
+year('error message', 2000, 2020);
+
+// The value (year) must after the year (inclusive).
+year('error message', 2000);
+
+// The value (year) must before the year (inclusive).
+year('error message', undefined|null, 2020);
+
+/**
+ * Relative offsets, relative to current year.
+ */
+
+// Any year in past, until current year.
+year('error message', -1, 0);
+
+// Any year in future, starts from current year.
+year('error message', 0, 1);
+
+// Any year between 2 years ago, up to 2 years from current year.
+year('error message', '-2y', '2y');
+
+// Combined fixed year with relative year.
+// Any year from 2000 until current year.
+year('error message', 2000, 0);
+
+```
+
+#### Year Tested Value Format
+The tested value must be passed to the validation as non zero number (string or number), otherwise the validation will fail implicitly with warning message.
+
 
 ## Custom Validation Rule
 Validation rule blueprint (typescript):

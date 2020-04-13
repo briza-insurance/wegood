@@ -6,18 +6,18 @@ import {
 
 /**
  * Range validation rule.
- * @param {string} errorMsg Error message.
- * @param {null|undefined|number} min Minimal boundary. If null or undefined,
+ * @param errorMsg Error message.
+ * @param min Minimal boundary. If null or undefined,
  * there is no min boundary.
- * @param {null|undefined|number} max Maximal boundary. If null or undefined,
+ * @param max Maximal boundary. If null or undefined,
  * there is no max boundary.
- * @return {ValidationRule} validation function, fn(value) => true|string,
+ * @return validation function, fn(value) => true|string,
  * returns true when valid, error message otherwise.
  */
 function range (
   errorMsg: string,
-  min: null|undefined|number,
-  max: null|undefined|number
+  min: null | undefined | number,
+  max: null | undefined | number
 ): ValidationRule {
   const minBoundary = isNumber(min)
   const maxBoundary = isNumber(max)
@@ -28,7 +28,7 @@ function range (
       no validation effect, it will be always validated as true.`)
   }
 
-  return (value): true|string => {
+  return (value): true | string => {
     const isValueNumber = isNumber(value)
     // if the value is not a number try to cast to number
     if (isValueNumber === false && isString(value)) {

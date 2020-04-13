@@ -7,12 +7,12 @@ import {
 
 /**
  * Present validation rule.
- * @param {string} errorMsg Error message.
- * @return {ValidationRule} validation function, fn(value) => true|string,
+ * @param errorMsg Error message.
+ * @return validation function, fn(value) => true|string,
  * returns true when valid, error message otherwise.
  */
 function present (errorMsg: string): ValidationRule {
-  return (value): true|string => {
+  return (value): true | string => {
     if (isNullOrUndefined(value)) {
       return errorMsg
     }

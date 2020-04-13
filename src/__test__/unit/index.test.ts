@@ -4,12 +4,12 @@ import equal from '../../rule/equal'
 describe('Validator', () => {
   test('constructor', () => {
     let exceptions = [
-      {rules: []},
-      {rules: [5]},
-      {rules: [{}]},
-      {rules: ['rule']},
+      { rules: [] },
+      { rules: [5] },
+      { rules: [{}] },
+      { rules: ['rule'] },
     ]
-  
+
     for (const exception of exceptions) {
       // @ts-ignore
       expect(() => new Validator(exception.rules)).toThrowError()
@@ -28,15 +28,19 @@ describe('Validator', () => {
     ])
     const tests = [
       // Valid
-      {value: 5, expected: {
-        valid: true,
-        errors: []
-      }},
+      {
+        value: 5, expected: {
+          valid: true,
+          errors: []
+        }
+      },
       // Invalid
-      {value: '1', expected: {
-        valid: false,
-        errors: ['a']
-      }},
+      {
+        value: '1', expected: {
+          valid: false,
+          errors: ['a']
+        }
+      },
     ]
 
     for (const t of tests) {
@@ -53,15 +57,19 @@ describe('Validator', () => {
     ])
     const tests = [
       // Valid
-      {value: 5, expected: {
-        valid: true,
-        errors: []
-      }},
+      {
+        value: 5, expected: {
+          valid: true,
+          errors: []
+        }
+      },
       // Invalid
-      {value: '1', expected: {
-        valid: false,
-        errors: ['a', 'b']
-      }},
+      {
+        value: '1', expected: {
+          valid: false,
+          errors: ['a', 'b']
+        }
+      },
     ]
 
     for (const t of tests) {
@@ -78,9 +86,9 @@ describe('Validator', () => {
     ])
     const tests = [
       // Valid
-      {value: 5, expected: true},
+      { value: 5, expected: true },
       // Invalid
-      {value: '1', expected: false},
+      { value: '1', expected: false },
     ]
 
     for (const t of tests) {
@@ -97,9 +105,9 @@ describe('Validator', () => {
     ])
     const tests = [
       // Valid
-      {value: 5, expected: []},
+      { value: 5, expected: [] },
       // Invalid
-      {value: '1', expected: ['a']},
+      { value: '1', expected: ['a'] },
     ]
 
     for (const t of tests) {
@@ -116,9 +124,9 @@ describe('Validator', () => {
     ])
     const tests = [
       // Valid
-      {value: 5, expected: []},
+      { value: 5, expected: [] },
       // Invalid
-      {value: '1', expected: ['a', 'b']},
+      { value: '1', expected: ['a', 'b'] },
     ]
 
     for (const t of tests) {

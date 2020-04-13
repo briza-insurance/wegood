@@ -5,26 +5,13 @@ import {
   isString,
   isNumber
 } from '../common/type-check'
+import { today } from '../common/time'
 
 // Boundary type used to determine if the date boundary should be before
 // or after the specific date.
-enum BoundaryType {
+export enum BoundaryType {
   Start = 0,
   End,
-}
-
-/**
-* Get today date.
-*/
-export function getToday (): Date {
-  return new Date((new Date()).setHours(0, 0, 0, 0))
-}
-
-/**
- * Expose mock-able rule members.
- */
-export const exported = {
-  getToday
 }
 
 /**
@@ -46,8 +33,8 @@ export const exported = {
 *
 * **-Ny** = -N years offset, e.g. -5y
 *
-* @param {string[]} match Regular expression match array.
-* @return {number} Offset in days.
+* @param match Regular expression match array.
+* @return Offset in days.
 */
 function dateOffset (match: RegExpMatchArray): number {
   const amount = parseInt(match[1])
@@ -67,13 +54,13 @@ function dateOffset (match: RegExpMatchArray): number {
 
 /**
  * Create a date boundary based on the boundary type.
- * @param {string|number|null|undefined} filter Date filter.
- * @param {number} dir Boundary direction, 0 start, 1 end.
- * @return {function} Function accepting the relative
+ * @param filter Date filter.
+ * @param dir Boundary direction, 0 start, 1 end.
+ * @return Function accepting the relative
  * date which should be used in the comparison procedure.
  */
 function dateBoundary (
-  filter: Date|string|number|null|undefined,
+  filter: Date | string | number | null | undefined,
   dir: BoundaryType
 ): (date: Date) => boolean {
   if (isNullOrUndefined(filter)) {
@@ -123,7 +110,7 @@ function dateBoundary (
         }
 
         // Illegal offset
-      } else if (filter !== '0') {
+      } else if (`${filter}` !== '0') {
         throw new Error(`illegal "${filter}" date boundary`)
       }
     }
@@ -138,21 +125,21 @@ function dateBoundary (
     }
 
     // Offset
-    const today = exported.getToday()
+    const todayDate = today()
     if (dir === BoundaryType.Start) {
-      return date.getTime() >= today.getTime() + (offset * 86400000)
+      return date.getTime() >= todayDate.getTime() + (offset * 86400000)
     }
-    return date.getTime() <= today.getTime() + (offset * 86400000)
+    return date.getTime() <= todayDate.getTime() + (offset * 86400000)
   }
 }
 
 /**
  * Get local timezone offset as ISO string
  * E.g. '-05:00'
- * @return {string} ISO timezone offset string
+ * @return ISO timezone offset string
  */
-function getISOTimezoneOffset (): string {
-  function pad (value: number): string|number {
+export function getISOTimezoneOffset (): string {
+  function pad (value: number): string | number {
     return value < 10 ? '0' + value : value
   }
 
@@ -169,25 +156,22 @@ function getISOTimezoneOffset (): string {
  * The value passed into the validation function must be a Date object
  * or ISO date string: yyyy-mm-dd. Or a custom transform function can
  * be used to perform custom string to date conversion.
- * @param {string} errorMsg Error message.
- * @param {Date|string|number|null|undefined} start Start date boundary.
+ * @param errorMsg Error message.
+ * @param start Start date boundary.
  * If null or undefined, there is no start boundary.
- * @param {Date|string|number|null|undefined} end End date boundary.
+ * @param end End date boundary.
  * If null or undefined, there is no end boundary.
- * @param {function} transform Optional custom transform function, to
+ * @param transform Optional custom transform function, to
  * convert the testing value into date object.
- * @return {ValidationRule} validation function, fn(value) => true|string,
+ * @return validation function, fn(value) => true|string,
  * returns true when valid, error message otherwise.
  */
 function date (
   errorMsg: string,
-  start: Date|string|number|null|undefined,
-  end: Date|string|number|null|undefined,
+  start: Date | string | number | null | undefined,
+  end: Date | string | number | null | undefined,
   transform?: (value: string) => Date
 ): ValidationRule {
-  const startBoundary = dateBoundary(start, BoundaryType.Start)
-  const endBoundary = dateBoundary(end, BoundaryType.End)
-
   // No boundaries
   if (isNullOrUndefined(start) && isNullOrUndefined(end)) {
     console.warn(`the date validation rule without start and end has
@@ -195,7 +179,10 @@ function date (
     return (): true => true
   }
 
-  return (value): true|string => {
+  const startBoundary = dateBoundary(start, BoundaryType.Start)
+  const endBoundary = dateBoundary(end, BoundaryType.End)
+
+  return (value): true | string => {
     if (isNullOrUndefined(value)) {
       return errorMsg
     }

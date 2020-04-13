@@ -1,6 +1,6 @@
 {
   "name": "@briza/wegood",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Tiny validation library, so wegood with data.",
   "main": "lib/wegood.js",
   "module": "lib/wegood.esm.js",
@@ -50,6 +50,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-simple-import-sort": "^5.0.2",
     "eslint-plugin-standard": "^4.0.1",
     "jest": "^24.9.0",
     "rollup": "^2.3.3",
@@ -59,7 +60,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "ts-jest": "^24.1.0",
     "typedoc": "^0.17.4",
-    "typescript": "^3.6.4"
+    "typescript": "^3.8.3"
   },
   "dependencies": {}
 }

@@ -4,6 +4,7 @@ import { ValidationRule } from './rule'
 import { isFunction } from './common/type-check'
 
 import date from './rule/date'
+import year from './rule/year'
 import equal from './rule/equal'
 import exclude from './rule/exclude'
 import include from './rule/include'
@@ -18,6 +19,7 @@ import present from './rule/present'
 export {
   present,
   date,
+  year,
   equal,
   exclude,
   include,
@@ -44,7 +46,7 @@ export class Validator {
 
   /**
    * @constructor
-   * @param {ValidationRule[]} rules Validation rules.
+   * @param rules Validation rules.
    * FIFO order, i.e. the rules will be tested from top to bottom.
    */
   constructor (rules: ValidationRule[]) {
@@ -61,7 +63,7 @@ export class Validator {
 
   /**
    * Get the validator rules.
-   * @return {ValidationRule[]}
+   * @return
    */
   get rules (): ValidationRule[] {
     return this._rules
@@ -71,11 +73,11 @@ export class Validator {
    * Validate against the value.
    * If all rules are satisfied, the return value is true.
    * Otherwise the return value is an error message of the failed rule.
-   * @param {mixed} value Validated value.
-   * @param {boolean} firstErrorOnly Return only first error.
+   * @param value Validated value.
+   * @param firstErrorOnly Return only first error.
    * Defaults to true.
    * If set to false, it returns an array of errors, if any.
-   * @return {ValidationResult}
+   * @return
    */
   validate (value: any, firstErrorOnly = true): ValidationResult {
     const res: ValidationResult = {
@@ -97,8 +99,8 @@ export class Validator {
 
   /**
    * Validity predicate against the value.
-   * @param {mixed} value Validated value.
-   * @return {boolean}
+   * @param value Validated value.
+   * @return
    */
   valid (value: any): boolean {
     for (const rule of this._rules) {
@@ -113,10 +115,10 @@ export class Validator {
   /**
    * Get all validation errors, if any.
    * Otherwise it returns empty array.
-   * @param {mixed} value Validated value.
-   * @param {boolean} firstErrorOnly Return only first error.
+   * @param value Validated value.
+   * @param firstErrorOnly Return only first error.
    * Defaults to false.
-   * @return {string[]}
+   * @return
    */
   errors (value: any, firstErrorOnly = false): string[] {
     const errors = []
