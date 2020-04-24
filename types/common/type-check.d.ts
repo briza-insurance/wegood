@@ -17,6 +17,12 @@ export declare function isNumber(value: any): value is number;
  */
 export declare function isString(value: any): value is string;
 /**
+ * Is boolean type predicate.
+ * @param value
+ * @return
+ */
+export declare function isBoolean(value: any): value is boolean;
+/**
  * Is function type predicate.
  * @param value
  * @return

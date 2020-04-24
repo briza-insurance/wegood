@@ -10,9 +10,11 @@ describe('Validator - Rule - Exclude', () => {
     // Valid types
     { value: 3, exclusions: [1, 2], expected: true },
     { value: '3', exclusions: ['1', '2'], expected: true },
+    { value: false, exclusions: [true, '1', 2], expected: true },
     // Falsy
     { value: 2, exclusions: [1, 2], expected: 'invalid' },
     { value: '2', exclusions: ['1', '2'], expected: 'invalid' },
+    { value: true, exclusions: [true, '1', 2], expected: 'invalid' },
     // Empty rule
     { value: 2, exclusions: [], expected: true },
   ]

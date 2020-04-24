@@ -6,5 +6,5 @@ import { ValidationRule } from '.';
  * @return validation function, fn(value) => true|string,
  * returns true when valid, error message otherwise.
  */
-declare function include(errorMsg: string, inclusions: (string | number)[]): ValidationRule;
+declare function include(errorMsg: string, inclusions: (string | number | boolean)[]): ValidationRule;
 export default include;

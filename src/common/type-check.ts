@@ -28,6 +28,15 @@ export function isString (value: any): value is string {
 }
 
 /**
+ * Is boolean type predicate.
+ * @param value
+ * @return
+ */
+export function isBoolean (value: any): value is boolean {
+  return value === false || value === true
+}
+
+/**
  * Is function type predicate.
  * @param value
  * @return

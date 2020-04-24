@@ -2,7 +2,8 @@ import { ValidationRule } from '.'
 import {
   isNullOrUndefined,
   isString,
-  isNumber
+  isNumber,
+  isBoolean
 } from '../common/type-check'
 
 /**
@@ -12,16 +13,16 @@ import {
  * @return validation function, fn(value) => true|string,
  * returns true when valid, error message otherwise.
  */
-function include (errorMsg: string, inclusions: (string | number)[]): ValidationRule {
+function include (errorMsg: string, inclusions: (string | number | boolean)[]): ValidationRule {
   // No inclusions
   if (inclusions.length === 0) {
-    console.warn(`the include validation rule without any inclusions
+    console.warn(`the include validation rule without any inclusions'
       has no validation effect, it will be always validated as false.`)
   }
 
   return (value): true | string => {
     if (isNullOrUndefined(value) ||
-      (isString(value) === false && isNumber(value) === false)) {
+      (!isBoolean(value) && !isString(value) && !isNumber(value))) {
       return errorMsg
     }
 

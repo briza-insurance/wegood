@@ -1,5 +1,9 @@
 # wegood changelog
 
+## 1.0.8
+
+* Update: Include/Exclude rule supports boolean values.
+
 ## 1.0.7
 
 * Feature: added new validation rule "year".
