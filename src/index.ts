@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { ValidationRule } from './rule'
 import { isFunction } from './common/type-check'
 
@@ -79,7 +77,7 @@ export class Validator {
    * If set to false, it returns an array of errors, if any.
    * @return
    */
-  validate (value: any, firstErrorOnly = true): ValidationResult {
+  validate (value: unknown, firstErrorOnly = true): ValidationResult {
     const res: ValidationResult = {
       valid: true,
       errors: []
@@ -102,7 +100,7 @@ export class Validator {
    * @param value Validated value.
    * @return
    */
-  valid (value: any): boolean {
+  valid (value: unknown): boolean {
     for (const rule of this._rules) {
       const result = rule(value)
       if (result !== true) {
@@ -120,7 +118,7 @@ export class Validator {
    * Defaults to false.
    * @return
    */
-  errors (value: any, firstErrorOnly = false): string[] {
+  errors (value: unknown, firstErrorOnly = false): string[] {
     const errors = []
     for (const rule of this._rules) {
       const result = rule(value)
