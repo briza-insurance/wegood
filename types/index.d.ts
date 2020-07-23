@@ -47,13 +47,13 @@ export declare class Validator {
      * If set to false, it returns an array of errors, if any.
      * @return
      */
-    validate(value: any, firstErrorOnly?: boolean): ValidationResult;
+    validate(value: unknown, firstErrorOnly?: boolean): ValidationResult;
     /**
      * Validity predicate against the value.
      * @param value Validated value.
      * @return
      */
-    valid(value: any): boolean;
+    valid(value: unknown): boolean;
     /**
      * Get all validation errors, if any.
      * Otherwise it returns empty array.
@@ -62,6 +62,6 @@ export declare class Validator {
      * Defaults to false.
      * @return
      */
-    errors(value: any, firstErrorOnly?: boolean): string[];
+    errors(value: unknown, firstErrorOnly?: boolean): string[];
 }
 export default Validator;

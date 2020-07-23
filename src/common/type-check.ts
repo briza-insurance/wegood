@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * Is Null or Undefined predicate.
  * @param value Rested value.
  * @return
  */
-export function isNullOrUndefined (value: any): boolean {
+export function isNullOrUndefined (value: unknown): boolean {
   return typeof value === 'undefined' || value === null
 }
 
@@ -14,7 +12,7 @@ export function isNullOrUndefined (value: any): boolean {
  * @param value Tested value.
  * @return
  */
-export function isNumber (value: any): value is number {
+export function isNumber (value: unknown): value is number {
   return typeof value === 'number' && isFinite(value)
 }
 
@@ -23,7 +21,7 @@ export function isNumber (value: any): value is number {
  * @param value
  * @return
  */
-export function isString (value: any): value is string {
+export function isString (value: unknown): value is string {
   return typeof value === 'string' || value instanceof String
 }
 
@@ -32,7 +30,7 @@ export function isString (value: any): value is string {
  * @param value
  * @return
  */
-export function isBoolean (value: any): value is boolean {
+export function isBoolean (value: unknown): value is boolean {
   return value === false || value === true
 }
 
@@ -41,7 +39,7 @@ export function isBoolean (value: any): value is boolean {
  * @param value
  * @return
  */
-export function isFunction (value: any): boolean {
+export function isFunction (value: unknown): boolean {
   return typeof value === 'function'
 }
 
@@ -50,7 +48,7 @@ export function isFunction (value: any): boolean {
  * @param value
  * @return
  */
-export function isDate (value: any): value is Date {
+export function isDate (value: unknown): value is Date {
   return value instanceof Date
 }
 
@@ -59,6 +57,6 @@ export function isDate (value: any): value is Date {
  * @param value tested value
  * @return result of the test
  */
-export function isObject (value: any): boolean {
-  return typeof value === 'object' && value.constructor === Object
+export function isObject (value: unknown): boolean {
+  return value && typeof value === 'object' && value.constructor === Object
 }
