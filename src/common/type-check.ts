@@ -39,7 +39,7 @@ export function isBoolean (value: unknown): value is boolean {
  * @param value
  * @return
  */
-export function isFunction (value: unknown): boolean {
+export function isFunction (value: unknown): value is Function {
   return typeof value === 'function'
 }
 
@@ -57,6 +57,10 @@ export function isDate (value: unknown): value is Date {
  * @param value tested value
  * @return result of the test
  */
-export function isObject (value: unknown): boolean {
-  return value && typeof value === 'object' && value.constructor === Object
+export function isObject (value: unknown): value is Record<string, unknown> {
+  return value !== null &&
+    value !== undefined &&
+    value &&
+    typeof value === 'object' &&
+    value.constructor === Object
 }
