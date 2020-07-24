@@ -1,21 +1,19 @@
 import equal from '../../equal'
 
 describe('Validator - Rule - Equal', () => {
-  const tests = [
-    { value: undefined, matcher: 5, expected: 'invalid' },
-    { value: null, matcher: 5, expected: 'invalid' },
-    { value: {}, matcher: 5, expected: 'invalid' },
-    { value: '5', matcher: 5, expected: 'invalid' },
-    { value: () => { }, matcher: 5, expected: 'invalid' },
-    { value: 5, matcher: 5, expected: true },
+  test.each([
+    // Falsy
+    [undefined, 5, 'invalid'],
+    [null, 5, 'invalid'],
+    [{}, 5, 'invalid'],
+    ['5', 5, 'invalid'],
+    [() => {}, 5, 'invalid'],
+    // Truthy
+    [5, 5, true],
     // Custom matcher
-    { value: 10, matcher: (value: any) => value === 5, expected: 'invalid' },
-    { value: 5, matcher: (value: any) => value === 5, expected: true },
-  ]
-
-  for (const t of tests) {
-    test(`Value: ${t.value}`, () => {
-      expect(equal('invalid', t.matcher)(t.value)).toBe(t.expected)
-    })
-  }
+    [10, (value: any) => value === 5, 'invalid'],
+    [5, (value: any) => value === 5, true]
+  ])('value %p tested on equal(%p) rule should evaluate as %p', (value, matcher, expected) => {
+    expect(equal('invalid', matcher)(value)).toBe(expected)
+  })
 })

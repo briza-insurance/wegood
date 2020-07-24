@@ -1,30 +1,26 @@
 import range from '../../range'
 
 describe('Validator - Rule - Range', () => {
-  const tests = [
+  test.each([
     // Invalid types
-    { value: undefined, min: 5, max: 5, expected: 'invalid' },
-    { value: null, min: 5, max: 5, expected: 'invalid' },
-    { value: {}, min: 5, max: 5, expected: 'invalid' },
-    { value: 'text', min: 5, max: 5, expected: 'invalid' },
-    { value: () => { }, min: 5, max: 5, expected: 'invalid' },
+    [undefined, 5, 5, 'invalid'],
+    [null, 5, 5, 'invalid'],
+    [{}, 5, 5, 'invalid'],
+    ['text', 5, 5, 'invalid'],
+    [() => { }, 5, 5, 'invalid'],
     // Valid types
-    { value: 1, min: 1, max: 10, expected: true },
-    { value: 1000, min: 1, max: null, expected: true },
-    { value: -1000, min: undefined, max: 10, expected: true },
+    [1, 1, 10, true],
+    [1000, 1, null, true],
+    [-1000, undefined, 10, true],
     // Parsed types
-    { value: '5', min: 1, max: 10, expected: true },
-    { value: '5.5', min: 1, max: 10, expected: true },
+    ['5', 1, 10, true],
+    ['5.5', 1, 10, true],
     // Outside range
-    { value: 0, min: 1, max: 10, expected: 'invalid' },
-    { value: 11, min: 1, max: 10, expected: 'invalid' },
+    [0, 1, 10, 'invalid'],
+    [11, 1, 10, 'invalid'],
     // Empty rule
-    { value: 0, min: undefined, max: null, expected: true },
-  ]
-
-  for (const t of tests) {
-    test(`Value: ${t.value}`, () => {
-      expect(range('invalid', t.min, t.max)(t.value)).toBe(t.expected)
-    })
-  }
+    [0, undefined, null, true]
+  ])('value %p tested on range(min: %p, max: %p) rule should evaluate as %p', (value, min, max, expected) => {
+    expect(range('invalid', min, max)(value)).toBe(expected)
+  })
 })

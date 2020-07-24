@@ -1,32 +1,28 @@
 import length from '../../length'
 
 describe('Validator - Rule - Length', () => {
-  const tests = [
+  test.each([
     // Invalid types
-    { value: undefined, min: 5, max: 5, expected: 'invalid' },
-    { value: null, min: 5, max: 5, expected: 'invalid' },
-    { value: {}, min: 5, max: 5, expected: 'invalid' },
-    { value: () => { }, min: 5, max: 5, expected: 'invalid' },
+    [undefined, 5, 5, 'invalid'],
+    [null, 5, 5, 'invalid'],
+    [{}, 5, 5, 'invalid'],
+    [() => { }, 5, 5, 'invalid'],
     // Valid types
-    { value: 'abcde', min: 5, max: 5, expected: true },
-    { value: 'abcde', min: 1, max: 10, expected: true },
-    { value: 'abcde', min: 1, max: null, expected: true },
-    { value: 'abcde', min: undefined, max: 10, expected: true },
+    ['abcde', 5, 5, true],
+    ['abcde', 1, 10, true],
+    ['abcde', 1, null, true],
+    ['abcde', undefined, 10, true],
     // Casted types
-    { value: 12345, min: 1, max: 10, expected: true },
-    { value: 12.345, min: 1, max: 10, expected: true },
+    [12345, 1, 10, true],
+    [12.345, 1, 10, true],
     // Outside range
-    { value: 'abcd', min: 5, max: 5, expected: 'invalid' },
-    { value: 'abcdef', min: 5, max: 5, expected: 'invalid' },
-    { value: '', min: 1, max: 10, expected: 'invalid' },
-    { value: 'abc', min: 1, max: 2, expected: 'invalid' },
+    ['abcd', 5, 5, 'invalid'],
+    ['abcdef', 5, 5, 'invalid'],
+    ['', 1, 10, 'invalid'],
+    ['abc', 1, 2, 'invalid'],
     // Empty rule
-    { value: '', min: undefined, max: null, expected: true },
-  ]
-
-  for (const t of tests) {
-    test(`Value: ${t.value}`, () => {
-      expect(length('invalid', t.min, t.max)(t.value)).toBe(t.expected)
-    })
-  }
+    ['', undefined, null, true]
+  ])('value %p tested on length(min: %p, max: %p) rule should evaluate as %p', (value, min, max, expected) => {
+    expect(length('invalid', min, max)(value)).toBe(expected)
+  })
 })

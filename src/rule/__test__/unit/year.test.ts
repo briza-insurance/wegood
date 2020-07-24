@@ -10,103 +10,50 @@ jest.mock('../../../common/time', () => ({
 const today = new Date(`2000-12-30T00:00:00${getISOTimezoneOffset()}`)
 
 describe('Validator - Rule - Year', () => {
-  const tests = [
-    // Invalid types
-    // { value: undefined, start: 0, end: 0, expected: 'invalid' },
-    // { value: null, start: 0, end: 0, expected: 'invalid' },
-    // { value: {}, start: 0, end: 0, expected: 'invalid' },
-    // { value: 'text', start: 0, end: 0, expected: 'invalid' },
-    // { value: () => { }, start: 0, end: 0, expected: 'invalid' },
-
+  test.each([
     /** In range */
     // Past<->Future
-    { value: today, start: -1, end: 1, expected: true },
+    [today, -1, 1, true],
     // Today<->future
-    { value: today, start: 0, end: 1, expected: true },
+    [today, 0, 1, true],
     // Past<->current year
-    { value: today, start: -1, end: 0, expected: true },
+    [today, -1, 0, true],
     // Current year
-    { value: today, start: 0, end: 0, expected: true },
+    [today, 0, 0, true],
     // Future start
-    { value: 2001, start: 1, end: undefined, expected: true },
+    [2001, 1, undefined, true],
     // Past end
-    { value: '1999', start: undefined, end: -1, expected: true },
+    ['1999', undefined, -1, true],
     // Specific past<->today
-    { value: today, start: 2000, end: 0, expected: true },
-    {
-      value: today,
-      start: 2000, end: 0,
-      expected: true
-    },
+    [today, 2000, 0, true],
+    [today, 2000, 0, true],
     // Today<->Specific future
-    { value: today, start: 0, end: 2001, expected: true },
-    {
-      value: today,
-      start: 0, end: 2000,
-      expected: true
-    },
+    [today, 0, 2001, true],
+    [today, 0, 2000, true],
     // Today<->+2years
-    {
-      value: 2002,
-      start: 0, end: '2y',
-      expected: true
-    },
+    [2002, 0, '2y', true],
     // -2years<->Today
-    {
-      value: '1998',
-      start: '-2y', end: 0,
-      expected: true
-    },
+    ['1998', '-2y', 0, true],
 
     /** Out of the range */
-    { value: 1999, start: 2000, end: 0, expected: 'invalid' },
-    { value: '2002', start: 0, end: 2001, expected: 'invalid' },
+    [1999, 2000, 0, 'invalid'],
+    ['2002', 0, 2001, 'invalid'],
     // Today<->no limit (future)
-    {
-      value: 1999,
-      start: 0, end: undefined,
-      expected: 'invalid'
-    },
+    [1999, 0, undefined, 'invalid'],
     // no limit (past)<->Today
-    {
-      value: 2001,
-      start: undefined, end: 0,
-      expected: 'invalid'
-    },
+    [2001, undefined, 0, 'invalid'],
     // Today<->+2years
-    {
-      value: 2003,
-      start: 0, end: '2y',
-      expected: 'invalid'
-    },
+    [2003, 0, '2y', 'invalid'],
     // -2years<->Today
-    {
-      value: 1997,
-      start: 0, end: '2y',
-      expected: 'invalid'
-    },
+    [1997, 0, '2y', 'invalid'],
     // Future start
-    {
-      value: '2000',
-      start: 1,
-      end: undefined,
-      expected: 'invalid'
-    },
+    ['2000', 1, undefined, 'invalid'],
     // Past end
-    {
-      value: '2000',
-      start: undefined,
-      end: -1,
-      expected: 'invalid'
-    },
+    ['2000', undefined, -1, 'invalid'],
 
     /** Empty rule */
-    { value: today, start: undefined, end: null, expected: true }
-  ]
-
-  for (const t of tests) {
-    test(`Value: ${t.value}`, () => {
-      expect(year('invalid', t.start, t.end)(t.value)).toBe(t.expected)
-    })
-  }
+    [today, undefined, null, true]
+  ])('value %p tested on year(start: %p, end: %p) rule should evaluate as %p', (value, start, end, expected) => {
+    expect(year('invalid', start, end)(value)).toBe(expected)
+  })
 })

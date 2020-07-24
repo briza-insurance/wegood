@@ -1,23 +1,19 @@
 import pattern from '../../pattern'
 
 describe('Validator - Rule - Pattern', () => {
-  const tests = [
+  test.each([
     // Invalid types
-    { value: undefined, rx: /.*/, expected: 'invalid' },
-    { value: null, rx: /.*/, expected: 'invalid' },
-    { value: {}, rx: /.*/, expected: 'invalid' },
-    { value: () => { }, rx: /.*/, expected: 'invalid' },
+    [undefined, /.*/, 'invalid'],
+    [null, /.*/, 'invalid'],
+    [{}, /.*/, 'invalid'],
+    [() => { }, /.*/, 'invalid'],
     // Valid types
-    { value: 'email@domain.com', rx: /^[^@]+@domain\.com/, expected: true },
+    ['email@domain.com', /^[^@]+@domain\.com/, true],
     // Casted types
-    { value: 12345, rx: /\d+/, expected: true },
+    [12345, /\d+/, true],
     // Falsy
-    { value: '@domain.com', rx: /^[^@]+@domain\.com/, expected: 'invalid' },
-  ]
-
-  for (const t of tests) {
-    test(`Value: ${t.value}`, () => {
-      expect(pattern('invalid', t.rx)(t.value)).toBe(t.expected)
-    })
-  }
+    ['@domain.com', /^[^@]+@domain\.com/, 'invalid']
+  ])('value %p tested on pattern(%p) rule should evaluate as %p', (value, rx, expected) => {
+    expect(pattern('invalid', rx)(value)).toBe(expected)
+  })
 })

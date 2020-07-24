@@ -1,34 +1,27 @@
 import present from '../../present'
 
 describe('Validator - Rule - Present', () => {
-  const tests = [
+  test.each([
     // Truthy
-    { value: 'a', expected: true },
-    { value: 0, expected: true },
-    { value: 0.0, expected: true },
-    { value: true, expected: true },
-    { value: false, expected: true },
-    { value: [1], expected: true },
+    ['a', true],
+    [0, true],
+    [0.0, true],
+    [true, true],
+    [false, true],
+    [[1], true],
     // Falsy
-    { value: undefined, expected: 'invalid' },
-    { value: null, expected: 'invalid' },
-    { value: '', expected: 'invalid' },
-    { value: [], expected: 'invalid' },
-  ]
+    [undefined, 'invalid'],
+    [null, 'invalid'],
+    ['', 'invalid'],
+    [[], 'invalid']
+  ])('value %p tested on present() rule should evaluate as %p', (value, expected) => {
+    expect(present('invalid')(value)).toBe(expected)
+  })
 
-  for (const t of tests) {
-    test(`Value: ${t.value}`, () => {
-      expect(present('invalid')(t.value)).toBe(t.expected)
-    })
-  }
-
-  let exceptions = [
-    { value: {} },
-    { value: () => { } },
-  ]
-
-  for (const exception of exceptions) {
-    // @ts-ignore
-    expect(() => present('invalid')(exception.value)).toThrowError()
-  }
+  test.each([
+    [{}],
+    [() => { }],
+  ])('value %p tested on present() rule should throw an error', (value) => {
+    expect(() => present('invalid')(value)).toThrowError()
+  })
 })

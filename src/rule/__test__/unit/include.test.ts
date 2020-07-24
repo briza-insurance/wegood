@@ -1,27 +1,23 @@
 import include from '../../include'
 
 describe('Validator - Rule - Include', () => {
-  const tests = [
+  test.each([
     // Invalid types
-    { value: undefined, inclusions: [1, 2], expected: 'invalid' },
-    { value: null, inclusions: [1, 2], expected: 'invalid' },
-    { value: {}, inclusions: [1, 2], expected: 'invalid' },
-    { value: () => { }, inclusions: [1, 2], expected: 'invalid' },
+    [undefined, [1, 2], 'invalid'],
+    [null, [1, 2], 'invalid'],
+    [{}, [1, 2], 'invalid'],
+    [() => { }, [1, 2], 'invalid'],
     // Valid types
-    { value: 2, inclusions: [1, 2], expected: true },
-    { value: '2', inclusions: ['1', '2'], expected: true },
-    { value: true, inclusions: [true, '1', 2], expected: true },
+    [2, [1, 2], true],
+    ['2', ['1', '2'], true],
+    [true, [true, '1', 2], true],
     // Falsy
-    { value: 3, inclusions: [1, 2], expected: 'invalid' },
-    { value: '3', inclusions: ['1', '2'], expected: 'invalid' },
-    { value: false, inclusions: [true, '1', 2], expected: 'invalid' },
+    [3, [1, 2], 'invalid'],
+    ['3', ['1', '2'], 'invalid'],
+    [false, [true, '1', 2], 'invalid'],
     // Empty rule
-    { value: 2, inclusions: [], expected: 'invalid' },
-  ]
-
-  for (const t of tests) {
-    test(`Value: ${t.value}`, () => {
-      expect(include('invalid', t.inclusions)(t.value)).toBe(t.expected)
-    })
-  }
+    [2, [], 'invalid']
+  ])('value %p tested on include(%p) rule should evaluate as %p', (value, inclusions, expected) => {
+    expect(include('invalid', inclusions)(value)).toBe(expected)
+  })
 })

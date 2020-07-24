@@ -1,27 +1,23 @@
 import exclude from '../../exclude'
 
 describe('Validator - Rule - Exclude', () => {
-  const tests = [
+  test.each([
     // Invalid types
-    { value: undefined, exclusions: [1, 2], expected: 'invalid' },
-    { value: null, exclusions: [1, 2], expected: 'invalid' },
-    { value: {}, exclusions: [1, 2], expected: 'invalid' },
-    { value: () => { }, exclusions: [1, 2], expected: 'invalid' },
+    [undefined, [1, 2], 'invalid'],
+    [null, [1, 2], 'invalid'],
+    [{}, [1, 2], 'invalid'],
+    [() => {}, [1, 2], 'invalid'],
     // Valid types
-    { value: 3, exclusions: [1, 2], expected: true },
-    { value: '3', exclusions: ['1', '2'], expected: true },
-    { value: false, exclusions: [true, '1', 2], expected: true },
+    [3, [1, 2], true],
+    ['3', ['1', '2'], true],
+    [false, [true, '1', 2], true],
     // Falsy
-    { value: 2, exclusions: [1, 2], expected: 'invalid' },
-    { value: '2', exclusions: ['1', '2'], expected: 'invalid' },
-    { value: true, exclusions: [true, '1', 2], expected: 'invalid' },
+    [2, [1, 2], 'invalid'],
+    ['2', ['1', '2'], 'invalid'],
+    [true, [true, '1', 2], 'invalid'],
     // Empty rule
-    { value: 2, exclusions: [], expected: true },
-  ]
-
-  for (const t of tests) {
-    test(`Value: ${t.value}`, () => {
-      expect(exclude('invalid', t.exclusions)(t.value)).toBe(t.expected)
-    })
-  }
+    [2, [], true],
+  ])('value %p tested on exclude(%p) rule should evaluate as %p', (value, exclusions, expected) => {
+    expect(exclude('invalid', exclusions)(value)).toBe(expected)
+  })
 })

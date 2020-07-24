@@ -9,200 +9,95 @@ jest.mock('../../../common/time', () => ({
 const today = new Date(`2000-12-30T00:00:00${getISOTimezoneOffset()}`)
 
 describe('Validator - Rule - Date', () => {
-  const tests = [
+  test.each([
     // Invalid types
-    { value: undefined, start: 0, end: 0, expected: 'invalid' },
-    { value: null, start: 0, end: 0, expected: 'invalid' },
-    { value: {}, start: 0, end: 0, expected: 'invalid' },
-    { value: 'text', start: 0, end: 0, expected: 'invalid' },
-    { value: () => { }, start: 0, end: 0, expected: 'invalid' },
+    [undefined, 0, 0, 'invalid'],
+    [null, 0, 0, 'invalid'],
+    [{}, 0, 0, 'invalid'],
+    ['text', 0, 0, 'invalid'],
+    [() => { }, 0, 0, 'invalid'],
 
     /** In range */
     // Past<->Future
-    { value: today, start: -1, end: 1, expected: true },
+    [today, -1, 1, true],
     // Today<->future
-    { value: today, start: 0, end: 1, expected: true },
+    [today, 0, 1, true],
     // Past<->today
-    { value: today, start: -1, end: 0, expected: true },
+    [today, -1, 0, true],
     // Today
-    { value: today, start: 0, end: 0, expected: true },
+    [today, 0, 0, true],
     // Future start
-    { value: new Date(`2000-12-31T00:00:00${getISOTimezoneOffset()}`), start: 1, end: undefined, expected: true },
+    [new Date(`2000-12-31T00:00:00${getISOTimezoneOffset()}`), 1, undefined, true],
     // Past end
-    { value: new Date(`2000-12-29T00:00:00${getISOTimezoneOffset()}`), start: undefined, end: -1, expected: true },
+    [new Date(`2000-12-29T00:00:00${getISOTimezoneOffset()}`), undefined, -1, true],
     // Specific past<->today
-    { value: today, start: '2000-12-29', end: 0, expected: true },
-    {
-      value: today,
-      start: new Date(`2000-12-29T00:00:00${getISOTimezoneOffset()}`), end: 0,
-      expected: true
-    },
+    [today, '2000-12-29', 0, true],
+    [today, new Date(`2000-12-29T00:00:00${getISOTimezoneOffset()}`), 0, true],
     // Today<->Specific future
-    { value: today, start: 0, end: '2000-12-31', expected: true },
-    {
-      value: today,
-      start: 0, end: new Date(`2000-12-31T00:00:00${getISOTimezoneOffset()}`),
-      expected: true
-    },
+    [today, 0, '2000-12-31', true],
+    [today, 0, new Date(`2000-12-31T00:00:00${getISOTimezoneOffset()}`), true],
     // Today<->+3days
-    {
-      value: new Date(`2001-01-01T00:00:00${getISOTimezoneOffset()}`),
-      start: 0, end: '3d',
-      expected: true
-    },
+    [new Date(`2001-01-01T00:00:00${getISOTimezoneOffset()}`), 0, '3d', true],
     // Today<->+1week
-    {
-      value: new Date(`2001-01-01T00:00:00${getISOTimezoneOffset()}`),
-      start: 0, end: '1w',
-      expected: true
-    },
+    [new Date(`2001-01-01T00:00:00${getISOTimezoneOffset()}`), 0, '1w', true],
     // Today<->+2months
-    {
-      value: new Date(`2001-01-01T00:00:00${getISOTimezoneOffset()}`),
-      start: 0, end: '2m',
-      expected: true
-    },
+    [new Date(`2001-01-01T00:00:00${getISOTimezoneOffset()}`), 0, '2m', true],
     // Today<->+2years
-    {
-      value: new Date(`2001-01-01T00:00:00${getISOTimezoneOffset()}`),
-      start: 0, end: '2y',
-      expected: true
-    },
+    [new Date(`2001-01-01T00:00:00${getISOTimezoneOffset()}`), 0, '2y', true],
     // Future start
-    {
-      value: new Date(`2001-01-05T00:00:00${getISOTimezoneOffset()}`),
-      start: '3d', end: undefined,
-      expected: true
-    },
+    [new Date(`2001-01-05T00:00:00${getISOTimezoneOffset()}`), '3d', undefined, true],
     // Future<->+3days
-    {
-      value: new Date(`2000-12-31T00:00:00${getISOTimezoneOffset()}`),
-      start: 1, end: '3d',
-      expected: true
-    },
+    [new Date(`2000-12-31T00:00:00${getISOTimezoneOffset()}`), 1, '3d', true],
     // Past end
-    {
-      value: new Date(`2000-12-20T00:00:00${getISOTimezoneOffset()}`),
-      start: -1, end: '-3d',
-      expected: true
-    },
+    [new Date(`2000-12-20T00:00:00${getISOTimezoneOffset()}`), -1, '-3d', true],
     // String value
-    { value: '2001-01-01', start: 0, end: '2y', expected: true },
-    {
-      value: '2000-12-31',
-      start: 1, end: '3d',
-      expected: true
-    },
+    ['2001-01-01', 0, '2y', true],
+    ['2000-12-31', 1, '3d', true],
 
     /** Out of the range */
-    { value: today, start: '2000-12-31', end: 0, expected: 'invalid' },
-    {
-      value: today,
-      start: new Date(`2000-12-31T00:00:00${getISOTimezoneOffset()}`), end: 0,
-      expected: 'invalid'
-    },
-    { value: today, start: 0, end: '2000-12-29', expected: 'invalid' },
-    {
-      value: today,
-      start: 0, end: new Date(`2000-12-29T00:00:00${getISOTimezoneOffset()}`),
-      expected: 'invalid'
-    },
+    [today, '2000-12-31', 0, 'invalid'],
+    [today, new Date(`2000-12-31T00:00:00${getISOTimezoneOffset()}`), 0, 'invalid'],
+    [today, 0, '2000-12-29', 'invalid'],
+    [today, 0, new Date(`2000-12-29T00:00:00${getISOTimezoneOffset()}`), 'invalid'],
     // Today<->no limit (future)
-    {
-      value: new Date(`2000-12-29T00:00:00${getISOTimezoneOffset()}`),
-      start: 0, end: undefined,
-      expected: 'invalid'
-    },
+    [new Date(`2000-12-29T00:00:00${getISOTimezoneOffset()}`), 0, undefined, 'invalid'],
     // no limit (past)<->Today
-    {
-      value: new Date(`2000-12-31T00:00:00${getISOTimezoneOffset()}`),
-      start: undefined, end: 0,
-      expected: 'invalid'
-    },
+    [new Date(`2000-12-31T00:00:00${getISOTimezoneOffset()}`), undefined, 0, 'invalid'],
     // Today<->+3days
-    {
-      value: new Date(`2001-01-03T00:00:00${getISOTimezoneOffset()}`),
-      start: 0, end: '3d',
-      expected: 'invalid'
-    },
+    [new Date(`2001-01-03T00:00:00${getISOTimezoneOffset()}`), 0, '3d', 'invalid'],
     // Today<->+1week
-    {
-      value: new Date(`2001-01-07T00:00:00${getISOTimezoneOffset()}`),
-      start: 0, end: '1w',
-      expected: 'invalid'
-    },
+    [new Date(`2001-01-07T00:00:00${getISOTimezoneOffset()}`), 0, '1w', 'invalid'],
     // Today<->+2months
-    {
-      value: new Date(`2000-03-01T00:00:00${getISOTimezoneOffset()}`),
-      start: 0, end: '2m',
-      expected: 'invalid'
-    },
+    [new Date(`2000-03-01T00:00:00${getISOTimezoneOffset()}`), 0, '2m', 'invalid'],
     // Today<->+2years
-    {
-      value: new Date(`2003-12-30T00:00:00${getISOTimezoneOffset()}`),
-      start: 0, end: '2y',
-      expected: 'invalid'
-    },
+    [new Date(`2003-12-30T00:00:00${getISOTimezoneOffset()}`), 0, '2y', 'invalid'],
     // Future start
-    {
-      value: new Date(`2000-12-30T00:00:00${getISOTimezoneOffset()}`),
-      start: 1,
-      end: undefined,
-      expected: 'invalid'
-    },
-    {
-      value: new Date(`2001-01-02T00:00:00${getISOTimezoneOffset()}`),
-      start: 1,
-      end: '2d',
-      expected: 'invalid'
-    },
+    [new Date(`2000-12-30T00:00:00${getISOTimezoneOffset()}`), 1, undefined, 'invalid'],
+    [new Date(`2001-01-02T00:00:00${getISOTimezoneOffset()}`), 1, '2d', 'invalid'],
     // Past end
-    {
-      value: new Date(`2000-12-30T00:00:00${getISOTimezoneOffset()}`),
-      start: undefined,
-      end: -1,
-      expected: 'invalid'
-    },
-    {
-      value: new Date(`2000-12-27T00:00:00${getISOTimezoneOffset()}`),
-      start: '-2d',
-      end: -1,
-      expected: 'invalid'
-    },
+    [new Date(`2000-12-30T00:00:00${getISOTimezoneOffset()}`), undefined, -1, 'invalid'],
+    [new Date(`2000-12-27T00:00:00${getISOTimezoneOffset()}`), '-2d', -1, 'invalid'],
 
     /** Empty rule */
-    { value: today, start: undefined, end: null, expected: true },
-  ]
+    [today, undefined, null, true],
+  ])('value %p tested on date(start: %p, end: %p) rule should evaluate as %p', (value, start, end, expected) => {
+    expect(date('invalid', start, end)(value)).toBe(expected)
+  })
 
-  for (const t of tests) {
-    test(`Value: ${t.value}`, () => {
-      expect(date('invalid', t.start, t.end)(t.value)).toBe(t.expected)
-    })
-  }
 
   // Custom transformer
   test('Custom transformer', () => {
-    expect(date(
-      'invalid',
-      0,
-      0,
-      (value: string) => today
-    )('2020-12-30')).toBe(true)
+    expect(date('invalid', 0, 0, (value: string) => today)('2020-12-30')).toBe(true)
   })
 
-  let exceptions = [
+  test.each([
     // Invalid ISO string
-    { value: today, start: '2000-12-32', end: 0 },
+    [today, '2000-12-32', 0],
     // Invalid offset
-    { value: today, start: '--5', end: 0 },
+    [today, '--5', 0],
     // Invalid value
-    { value: '2010-13-12', start: 0, end: 0 },
-  ]
-
-  for (const exception of exceptions) {
-    // @ts-ignore
-    expect(
-      () => date('invalid', exception.start, exception.end)(exception.value)
-    ).toThrowError()
-  }
+    ['2010-13-12', 0, 0],
+  ])('value %p tested on date(start: %p, end: %p) rule should throw an error', (value, start, end) => {
+    expect(() => date('invalid', start, end)(value)).toThrowError()
+  })
 })
