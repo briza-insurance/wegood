@@ -17,7 +17,16 @@ module.exports = {
     }
   },
   extends: [
-    'standard',
-    'plugin:@typescript-eslint/recommended'
-  ]
+    'plugin:@typescript-eslint/recommended',
+    'standard'
+  ],
+  rules: {
+    curly: 'error',
+    'max-len': ['error', { code: 120 }],
+    'no-dupe-class-members': 'off',
+    'no-useless-constructor': 'off',
+    '@typescript-eslint/no-useless-constructor': 'off',
+    '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: false }],
+    'simple-import-sort/sort': ['error']
+  }
 }

@@ -1,13 +1,7 @@
-import { ValidationRule } from '.'
-import {
-  BoundaryType
-} from './date'
-import {
-  isDate,
-  isString,
-  isNullOrUndefined
-} from '../common/type-check'
 import { today } from '../common/time'
+import { isDate, isNullOrUndefined, isString } from '../common/type-check'
+import { ValidationRule } from '.'
+import { BoundaryType } from './date'
 
 /**
  * Create year boundary based on the boundary type.

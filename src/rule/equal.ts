@@ -1,8 +1,5 @@
+import { isFunction, isNullOrUndefined } from '../common/type-check'
 import { ValidationRule } from '.'
-import {
-  isNullOrUndefined,
-  isFunction
-} from '../common/type-check'
 
 // Custom equality predicate function
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

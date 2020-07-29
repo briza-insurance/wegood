@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /**
  * Validation Rule
  * - Returned true, represent that the rule is satisfied, i.e. valid.

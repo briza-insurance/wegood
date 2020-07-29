@@ -22,6 +22,8 @@
     "build": "npm run build:types && npm run build:js",
     "docs": "typedoc src",
     "test": "jest",
+    "lint": "eslint --max-warnings 0 \"src/**/*.{ts,js}\"",
+    "lint:fix": "eslint --max-warnings 0 \"src/**/*.{ts,js}\" --fix",
     "prepublishOnly": "npm run test && npm run build"
   },
   "repository": {

@@ -1,9 +1,5 @@
+import { isFunction, isNullOrUndefined, isObject } from '../common/type-check'
 import { ValidationRule } from '.'
-import {
-  isNullOrUndefined,
-  isFunction,
-  isObject
-} from '../common/type-check'
 
 /**
  * Present validation rule.

@@ -1,10 +1,5 @@
+import { isBoolean, isNullOrUndefined, isNumber, isString } from '../common/type-check'
 import { ValidationRule } from '.'
-import {
-  isNullOrUndefined,
-  isString,
-  isNumber,
-  isBoolean
-} from '../common/type-check'
 
 /**
  * Include validation rule.

@@ -1,15 +1,14 @@
-import { ValidationRule } from './rule'
 import { isFunction } from './common/type-check'
-
+import { ValidationRule } from './rule'
 import date from './rule/date'
-import year from './rule/year'
 import equal from './rule/equal'
 import exclude from './rule/exclude'
 import include from './rule/include'
 import length from './rule/length'
 import pattern from './rule/pattern'
-import range from './rule/range'
 import present from './rule/present'
+import range from './rule/range'
+import year from './rule/year'
 
 /**
  * Built-in validation rules

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+
 /**
  * Is Null or Undefined predicate.
  * @param value Rested value.

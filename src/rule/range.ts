@@ -1,8 +1,5 @@
+import { isNumber, isString } from '../common/type-check'
 import { ValidationRule } from '.'
-import {
-  isNumber,
-  isString
-} from '../common/type-check'
 
 /**
  * Range validation rule.

@@ -1,9 +1,5 @@
+import { isNullOrUndefined, isNumber, isString } from '../common/type-check'
 import { ValidationRule } from '.'
-import {
-  isNullOrUndefined,
-  isString,
-  isNumber
-} from '../common/type-check'
 
 /**
  * Pattern validation rule.

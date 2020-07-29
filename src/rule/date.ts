@@ -1,11 +1,6 @@
-import { ValidationRule } from '.'
-import {
-  isNullOrUndefined,
-  isDate,
-  isString,
-  isNumber
-} from '../common/type-check'
 import { today } from '../common/time'
+import { isDate, isNullOrUndefined, isNumber, isString } from '../common/type-check'
+import { ValidationRule } from '.'
 
 // Boundary type used to determine if the date boundary should be before
 // or after the specific date.
