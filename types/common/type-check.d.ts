@@ -27,7 +27,7 @@ export declare function isBoolean(value: unknown): value is boolean;
  * @param value
  * @return
  */
-export declare function isFunction(value: unknown): boolean;
+export declare function isFunction(value: unknown): value is Function;
 /**
  * Is date type predicate.
  * @param value
@@ -39,4 +39,4 @@ export declare function isDate(value: unknown): value is Date;
  * @param value tested value
  * @return result of the test
  */
-export declare function isObject(value: unknown): boolean;
+export declare function isObject(value: unknown): value is Record<string, unknown>;
