@@ -24,7 +24,8 @@
     "test": "jest",
     "lint": "eslint --max-warnings 0 \"src/**/*.{ts,js}\"",
     "lint:fix": "eslint --max-warnings 0 \"src/**/*.{ts,js}\" --fix",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepublishOnly": "npm run test && npm run build",
+    "check-licenses": "license-checker --summary --excludePrivatePackages --onlyAllow 'MIT;MIT OR X11'"
   },
   "repository": {
     "type": "git",
@@ -58,6 +59,7 @@
     "eslint-plugin-simple-import-sort": "^5.0.2",
     "eslint-plugin-standard": "^4.0.1",
     "jest": "^26.2.2",
+    "license-checker": "^25.0.1",
     "rollup": "^2.23.0",
     "rollup-plugin-eslint": "^7.0.0",
     "ts-jest": "^26.1.4",
