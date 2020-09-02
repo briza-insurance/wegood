@@ -25,6 +25,7 @@ module.exports = {
     'max-len': ['error', { code: 120 }],
     'no-dupe-class-members': 'off',
     'no-useless-constructor': 'off',
+    'no-undef': 'off',
     '@typescript-eslint/no-useless-constructor': 'off',
     '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: false }],
     'simple-import-sort/sort': ['error']
