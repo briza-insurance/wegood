@@ -1,18 +1,15 @@
-/* eslint-disable @typescript-eslint/ban-types */
-
+/* eslint-disable no-undef */
 /**
  * Is Null or Undefined predicate.
  * @param value Rested value.
- * @return
  */
-export function isNullOrUndefined (value: unknown): boolean {
+export function isNullOrUndefined (value: unknown): value is null | undefined {
   return typeof value === 'undefined' || value === null
 }
 
 /**
  * Is number predicate.
  * @param value Tested value.
- * @return
  */
 export function isNumber (value: unknown): value is number {
   return typeof value === 'number' && isFinite(value)
@@ -21,7 +18,6 @@ export function isNumber (value: unknown): value is number {
 /**
  * Is string type predicate.
  * @param value
- * @return
  */
 export function isString (value: unknown): value is string {
   return typeof value === 'string' || value instanceof String
@@ -30,7 +26,6 @@ export function isString (value: unknown): value is string {
 /**
  * Is boolean type predicate.
  * @param value
- * @return
  */
 export function isBoolean (value: unknown): value is boolean {
   return value === false || value === true
@@ -41,14 +36,13 @@ export function isBoolean (value: unknown): value is boolean {
  * @param value
  * @return
  */
-export function isFunction (value: unknown): value is Function {
+export function isFunction (value: unknown): value is Function { // eslint-disable-line @typescript-eslint/ban-types
   return typeof value === 'function'
 }
 
 /**
  * Is date type predicate.
  * @param value
- * @return
  */
 export function isDate (value: unknown): value is Date {
   return value instanceof Date
@@ -57,12 +51,13 @@ export function isDate (value: unknown): value is Date {
 /**
  * Is Object
  * @param value tested value
- * @return result of the test
  */
 export function isObject (value: unknown): value is Record<string, unknown> {
-  return value !== null &&
-    value !== undefined &&
-    value &&
-    typeof value === 'object' &&
-    value.constructor === Object
+  if (value === null || value === undefined) {
+    return false
+  }
+  if (typeof value !== 'object' || value?.constructor !== Object) {
+    return false
+  }
+  return true
 }
