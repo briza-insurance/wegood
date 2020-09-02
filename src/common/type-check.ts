@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * Is Null or Undefined predicate.
  * @param value Rested value.
