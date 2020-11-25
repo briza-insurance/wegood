@@ -21,7 +21,7 @@ export declare function getISOTimezoneOffset(): string;
  * If null or undefined, there is no end boundary.
  * @param transform Optional custom transform function, to
  * convert the testing value into date object.
- * @param todayDate Optional today date to be used as reference
+ * @param todayDate Optional Today's date to be used as reference
  * validating ranges. If not provided, the start of the day in
  * the current runtime timezone will be used.
  * @return validation function, fn(value) => true|string,
