@@ -620,6 +620,11 @@ include(<span class="hljs-string">&#x27;error message&#x27;</span>, [<span class
 							<td>Custom Date object transformer function. Optional.</td>
 							<td><code>(value) =&gt; new Date(value)</code></td>
 						</tr>
+						<tr>
+							<td>todayDate</td>
+							<td>Today date to be used for relative date boundaries. Optional, if not provided the start of the day in current environment timezone will be used</td>
+							<td><code>new Date(&#39;2020-10-10T00:00:00+03:00)</code></td>
+						</tr>
 				</tbody></table>
 				<blockquote>
 					<p><a href="https://briza-insurance.github.io/wegood/modules/_rule_date_.html">Code documentation</a>.</p>
@@ -722,7 +727,7 @@ date(<span class="hljs-string">&#x27;error message&#x27;</span>, <span class="hl
  */</span>
 
 <span class="hljs-comment">// Any date in past, until today.</span>
-date(<span class="hljs-string">&#x27;error message&#x27;</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>);
+date(<span class="hljs-string">&#x27;error message&#x27;</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>);
 
 <span class="hljs-comment">// Any date in future, starts from today.</span>
 date(<span class="hljs-string">&#x27;error message&#x27;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
@@ -733,6 +738,9 @@ date(<span class="hljs-string">&#x27;error message&#x27;</span>, <span class="hl
 <span class="hljs-comment">// Combined fixed date with relative date.</span>
 <span class="hljs-comment">// Any date from 2000-12-30 until today.</span>
 date(<span class="hljs-string">&#x27;error message&#x27;</span>, <span class="hljs-string">&#x27;2000-12-30&#x27;</span>, <span class="hljs-number">0</span>);
+
+<span class="hljs-comment">// Passing today Date</span>
+date(<span class="hljs-string">&#x27;error message&#x27;</span>, <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;60d&#x27;</span>, <span class="hljs-literal">undefined</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">&#x27;2020-11-11T00:00:00+03:00&#x27;</span>))
 </code></pre>
 				<a href="#date-tested-value-format" id="date-tested-value-format" style="color: inherit; text-decoration: none;">
 					<h4>Date Tested Value Format</h4>
@@ -827,7 +835,7 @@ year(<span class="hljs-string">&#x27;error message&#x27;</span>, <span class="hl
  */</span>
 
 <span class="hljs-comment">// Any year in past, until current year.</span>
-year(<span class="hljs-string">&#x27;error message&#x27;</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>);
+year(<span class="hljs-string">&#x27;error message&#x27;</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>);
 
 <span class="hljs-comment">// Any year in future, starts from current year.</span>
 year(<span class="hljs-string">&#x27;error message&#x27;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
