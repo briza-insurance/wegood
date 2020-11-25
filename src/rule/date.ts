@@ -56,7 +56,8 @@ function dateOffset (match: RegExpMatchArray): number {
  */
 function dateBoundary (
   filter: Date | string | number | null | undefined,
-  dir: BoundaryType
+  dir: BoundaryType,
+  todayDate: Date
 ): (date: Date) => boolean {
   if (isNullOrUndefined(filter)) {
     return (): boolean => true
@@ -120,7 +121,6 @@ function dateBoundary (
     }
 
     // Offset
-    const todayDate = today()
     if (dir === BoundaryType.Start) {
       return date.getTime() >= todayDate.getTime() + (offset * 86400000)
     }
@@ -158,6 +158,9 @@ export function getISOTimezoneOffset (): string {
  * If null or undefined, there is no end boundary.
  * @param transform Optional custom transform function, to
  * convert the testing value into date object.
+ * @param todayDate Optional today date to be used as reference
+ * validating ranges. If not provided, the start of the day in
+ * the current runtime timezone will be used.
  * @return validation function, fn(value) => true|string,
  * returns true when valid, error message otherwise.
  */
@@ -165,7 +168,8 @@ function date (
   errorMsg: string,
   start: Date | string | number | null | undefined,
   end: Date | string | number | null | undefined,
-  transform?: (value: string) => Date
+  transform?: (value: string) => Date,
+  todayDate?: Date
 ): ValidationRule {
   // No boundaries
   if (isNullOrUndefined(start) && isNullOrUndefined(end)) {
@@ -174,8 +178,9 @@ function date (
     return (): true => true
   }
 
-  const startBoundary = dateBoundary(start, BoundaryType.Start)
-  const endBoundary = dateBoundary(end, BoundaryType.End)
+  todayDate = todayDate ?? today()
+  const startBoundary = dateBoundary(start, BoundaryType.Start, todayDate)
+  const endBoundary = dateBoundary(end, BoundaryType.End, todayDate)
 
   return (value): true | string => {
     if (isNullOrUndefined(value)) {
