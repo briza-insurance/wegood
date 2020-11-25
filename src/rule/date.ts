@@ -51,6 +51,8 @@ function dateOffset (match: RegExpMatchArray): number {
  * Create a date boundary based on the boundary type.
  * @param filter Date filter.
  * @param dir Boundary direction, 0 start, 1 end.
+ * @param todayDate Today's date to be used as reference
+ * validating ranges.
  * @return Function accepting the relative
  * date which should be used in the comparison procedure.
  */
@@ -158,7 +160,7 @@ export function getISOTimezoneOffset (): string {
  * If null or undefined, there is no end boundary.
  * @param transform Optional custom transform function, to
  * convert the testing value into date object.
- * @param todayDate Optional today date to be used as reference
+ * @param todayDate Optional Today's date to be used as reference
  * validating ranges. If not provided, the start of the day in
  * the current runtime timezone will be used.
  * @return validation function, fn(value) => true|string,

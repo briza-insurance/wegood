@@ -443,7 +443,7 @@ date(errorMessage, start, end, transform)
 | start | Start date boundary: ```ISO date string``` (yyyy-mm-dd), ```Date object```, or [Relative Date Offset](#relative-date-offset). If set to ```undefined``` or ```null```, it is being ignored. | 2020-03-16 |
 | end | End date boundary: ```ISO date string``` (yyyy-mm-dd), ```Date object```, or [Relative Date Offset](#relative-date-offset). If set to ```undefined``` or ```null```, it is being ignored. | 3y |
 | transform | Custom Date object transformer function. Optional. | ```(value) => new Date(value)``` |
-| todayDate | Today date to be used for relative date boundaries. Optional, if not provided the start of the day in current environment timezone will be used | ```new Date('2020-10-10T00:00:00+03:00)``` |
+| todayDate | Today's date to be used for relative date boundaries. Optional, if not provided the start of the day in current environment timezone will be used | ```new Date('2020-10-10T00:00:00+03:00)``` |
 
 > [Code documentation](https://briza-insurance.github.io/wegood/modules/_rule_date_.html).
 
