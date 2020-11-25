@@ -1,5 +1,9 @@
 # wegood changelog
 
+## 1.0.9
+
+* Feature: add Today's date argument to date validator.
+
 ## 1.0.8
 
 * Update: Include/Exclude rule supports boolean values.
