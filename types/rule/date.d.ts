@@ -21,8 +21,11 @@ export declare function getISOTimezoneOffset(): string;
  * If null or undefined, there is no end boundary.
  * @param transform Optional custom transform function, to
  * convert the testing value into date object.
+ * @param todayDate Optional Today's date to be used as reference
+ * validating ranges. If not provided, the start of the day in
+ * the current runtime timezone will be used.
  * @return validation function, fn(value) => true|string,
  * returns true when valid, error message otherwise.
  */
-declare function date(errorMsg: string, start: Date | string | number | null | undefined, end: Date | string | number | null | undefined, transform?: (value: string) => Date): ValidationRule;
+declare function date(errorMsg: string, start: Date | string | number | null | undefined, end: Date | string | number | null | undefined, transform?: (value: string) => Date, todayDate?: Date): ValidationRule;
 export default date;

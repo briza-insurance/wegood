@@ -100,4 +100,10 @@ describe('Validator - Rule - Date', () => {
   ])('value %p tested on date(start: %p, end: %p) rule should throw an error', (value, start, end) => {
     expect(() => date('invalid', start, end)(value)).toThrowError()
   })
+
+  test('provided today date', () => {
+    expect(
+      date('invalid', 1, '60d', undefined, new Date(`1998-07-28T00:00:00${getISOTimezoneOffset()}`)
+    )(new Date(`1998-07-29T00:00:00${getISOTimezoneOffset()}`))).toBe(true)
+  })
 })
