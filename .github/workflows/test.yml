@@ -15,11 +15,9 @@ jobs:
         run: npm i
       - name: Scan project for vulnerabilities
         run: npm audit
-      - name: Scan project for vulnerabilities
-        run: npm audit
       - name: Check licenses
         run: npm run check-licenses
       - name: Run test suite
-        run: npm t
+        run: npm run test
       - name: Run build
         run: npm run build
