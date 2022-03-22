@@ -2,7 +2,7 @@
 
 Tiny validation library, so wegood with data.
 
-> Revision: February 1, 2022.
+> Revision: March 22, 2022.
 
 ## About
 
