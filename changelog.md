@@ -1,5 +1,9 @@
 # wegood changelog
 
+## 1.0.12
+
+- Update dependencies.
+
 ## 1.0.11
 
 - Update dependencies.

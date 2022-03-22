@@ -1,6 +1,6 @@
 {
   "name": "@briza/wegood",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Tiny validation library, so wegood with data.",
   "main": "lib/wegood.js",
   "module": "lib/wegood.esm.js",
