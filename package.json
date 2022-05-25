@@ -61,7 +61,6 @@
     "jest": "^28.1.0",
     "license-checker": "^25.0.1",
     "rollup": "^2.74.0",
-    "rollup-plugin-eslint": "^7.0.0",
     "ts-jest": "^28.0.2",
     "typedoc": "^0.22.15",
     "typescript": "^4.6.4"
